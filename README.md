@@ -1,4 +1,4 @@
-# v2-specification
+# v2-client-specification
 ### Changing the structure of JavaScript API
 
 ## Goal
