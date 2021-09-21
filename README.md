@@ -29,4 +29,29 @@ This version has no effect on Neutralinojs server and there is no change in the 
 
 ### window
 
+- window.setTitle: No changes
+- window.minimize: No changes
+- window.maximize: No changes
+- window.unmaximize: No changes
+- window.isMaximized: No changes
+- window.setFullScreen: No changes
+- window.exitFullScreen: No changes
+- window.isFullScreen: No changes
+- window.show: No changes
+- window.hide: No changes
+- window.isVisible: No changes
+- window.focus: No changes
+- window.move: No changes
+- window.setIcon: No changes
+- window.setDraggableRegion: No changes
+- window.setSize: No changes
+- window.create: No changes
 
+### filesystem
+
+- filesystem.createDirectory: filesystem.createDirectory(dirPath)
+- filesystem.removeDirectory: filesystem.removeDirectory(dirPath)
+- filesystem.writeFile: filesystem.writeFile(fileLocation, dataString)
+- filesystem.writeBinaryFile: filesystem.writeBinaryFile(fileLocation, binaryData)
+- filesystem.readFile: filesystem.readFile(fileLocation) will return the file content directly.
+- filesystem.readBinaryFile: filesystem.readBinaryFile(fileLocation, binaryData) will return the binary content directly.
