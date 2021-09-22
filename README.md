@@ -15,7 +15,8 @@ namespace.os.exeCommand('bash longtask.sh', {shouldRunInBackground: true});
 
 ## Breaking changes
 
-This version has no effect on Neutralinojs server and there is no change in the communication interface between client and the server. v2 is just for restructuring the Neutralinojs JavaScript API.
+See the following changes.
+
 
 ## API structure changes
 
