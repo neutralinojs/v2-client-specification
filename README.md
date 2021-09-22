@@ -25,7 +25,7 @@ This version has no effect on Neutralinojs server and there is no change in the 
 - app.killProcess: No changes
 - app.keepAlive: No changes
 - app.getConfig: No changes
-- app.open: app.open(url)
+- app.open: os.open(url)
 
 ### window
 
