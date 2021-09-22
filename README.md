@@ -19,7 +19,7 @@ This version has no effect on Neutralinojs server and there is no change in the 
 
 ## API structure changes
 
-### app
+### app (Done)
 
 - app.exit: No changes
 - app.killProcess: No changes
