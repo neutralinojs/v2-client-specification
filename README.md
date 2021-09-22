@@ -28,7 +28,7 @@ See the following changes.
 - app.getConfig: No changes
 - app.open: os.open(url)
 
-### window
+### window (Done)
 
 - window.setTitle: No changes
 - window.minimize: No changes
@@ -48,7 +48,7 @@ See the following changes.
 - window.setSize: No changes
 - window.create: No changes
 
-### filesystem
+### filesystem (Done)
 
 - filesystem.createDirectory: filesystem.createDirectory(dirPath)
 - filesystem.removeDirectory: filesystem.removeDirectory(dirPath)
@@ -62,30 +62,30 @@ See the following changes.
 - filesystem.moveFile: No changes
 - filesystem.getstats: No changes
 
-### os
+### os (Done)
 
 - os.execCommand: os.execCommand(command, {options}) will return the `output` directly.
-- os.getEnvar: os.getEnvar(key) will return the `value` directly.
-- os.showDialogOpen: os.showOpenDialog(options) will return the `selectedEntry` directly.
-- os.showDialogSave: os.showDialogSave(options) will return the `selectedEntry` directly.
+- os.getEnvar: os.getEnv(key) will return the `value` directly.
+- os.showDialogOpen: os.showOpenDialog(title, options) will return the `selectedEntry` directly.
+- os.showDialogSave: os.showDialogSave(title) will return the `selectedEntry` directly.
 - os.showNotification: os.showNotification(title, content)
-- os.showMessageBox: os.showMessageBox(type, title, content)
+- os.showMessageBox: os.showMessageBox(title, content, type)
 - os.setTray: No changes
 
-### computer
+### computer (Done)
 
 - computer.getRamUsage: computer.getMemoryInfo() will return all info properties without using `ram`.
 
-### storage
+### storage (Done)
 
 - storage.putData: storage.setData(key, value)
 - storage.getData: storage.getData(key) will return the `data` field directly.
 
-### debug
+### debug (Done)
 
-- debug.log: debug.log(type, message)
+- debug.log: debug.log(type, message). `type: WARN` needs to be renamed to `type: WARNING`.
 
-### events
+### events (Done)
 
 - events.on: No changes
 - events.off: No changes
