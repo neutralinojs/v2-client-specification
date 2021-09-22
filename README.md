@@ -55,3 +55,37 @@ This version has no effect on Neutralinojs server and there is no change in the 
 - filesystem.writeBinaryFile: filesystem.writeBinaryFile(fileLocation, binaryData)
 - filesystem.readFile: filesystem.readFile(fileLocation) will return the file content directly.
 - filesystem.readBinaryFile: filesystem.readBinaryFile(fileLocation, binaryData) will return the binary content directly.
+- filesystem.removeFile: filesystem.removeFile(fileLocation)
+- filesystem.readDirectory: filesystem.readDirectory(dirPath) will return the `entries` directly.
+- filesystem.copyFile: No changes
+- filesystem.moveFile: No changes
+- filesystem.getstats: No changes
+
+### os
+
+- os.execCommand: os.execCommand(command, {options}) will return the `output` directly.
+- os.getEnvar: os.getEnvar(key) will return the `value` directly.
+- os.showDialogOpen: os.showOpenDialog(options) will return the `selectedEntry` directly.
+- os.showDialogSave: os.showDialogSave(options) will return the `selectedEntry` directly.
+- os.showNotification: os.showNotification(title, content)
+- os.showMessageBox: os.showMessageBox(type, title, content)
+- os.setTray: No changes
+
+### computer
+
+- computer.getRamUsage: computer.getMemoryInfo() will return all info properties without using `ram`.
+
+### storage
+
+- storage.putData: storage.setData(key, value)
+- storage.getData: storage.getData(key) will return the `data` field directly.
+
+### debug
+
+- debug.log: debug.log(type, message)
+
+### events
+
+- events.on: No changes
+- events.off: No changes
+- events.dispatch: No changes
