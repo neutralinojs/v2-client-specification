@@ -24,7 +24,7 @@ This version has no effect on Neutralinojs server and there is no change in the 
 - app.exit: No changes
 - app.killProcess: No changes
 - app.keepAlive: No changes
-- app.getConfig: This will return the config object directly without the `config` attribute.
+- app.getConfig: No changes
 - app.open: app.open(url)
 
 ### window
