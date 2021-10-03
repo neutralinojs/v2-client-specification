@@ -1,7 +1,8 @@
 openapi: 3.0.2
 info:
-  title: neutralino
-  version: '1.5.0'
+  title: neutralino-app-api
+  version: 1.5.0
+  description: ''
 servers:
   - url: 'http://localhost'
     description: ''
@@ -16,7 +17,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/SCOPE'
     post:
-      operationId: app::controllers::exit
+      operationId: 'app::controllers::exit'
       description: Terminates the running application.
       tags:
         - NativeMethod
@@ -35,7 +36,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/SCOPE'
     get:
-      operationId: app::controllers::getconfig
+      operationId: 'app::controllers::getconfig'
       description: Returns the current application configuration as a JSON object.
       tags:
         - NativeMethod
@@ -47,7 +48,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/SCOPE'
     get:
-      operationId: app::controllers::keepalive
+      operationId: 'app::controllers::keepalive'
       description: |-
         The keepAlive method is responsible for saving the Neutralinojs server instance from the automatic termination.
         This method is called automatically from the client library for the browser mode.
@@ -64,7 +65,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/SCOPE'
     get:
-      operationId: app::controllers::killprocess
+      operationId: 'app::controllers::killprocess'
       description: |-
         Kills the application process.
         If the application becomes unresponsive, you can use this to terminate the process instantly.
@@ -85,7 +86,7 @@ components:
       type: apiKey
       in: header
   parameters:
-    'SCOPE':
+    SCOPE:
       name: scope
       in: path
       required: true

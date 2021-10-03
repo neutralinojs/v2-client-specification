@@ -4,7 +4,7 @@
 
 import Fs from 'fs'
 import Yaml from 'yaml'
-import { quicktype, InputData, JSONSchemaInput } from 'quicktype-core'
+import { quicktype, InputData, JSONSchemaInput, FetchingJSONSchemaStore } from 'quicktype-core'
 
 const namespaces = [
     'app',
@@ -57,16 +57,17 @@ function getResponses (apiNamespace)
 
 Promise.all (namespaces.map (async ns =>
 {
-    const inputData = new InputData ()
+    const schemaInput = new JSONSchemaInput (new FetchingJSONSchemaStore ())
 
     // Shared definitions (like Always Success Response) are replaced
     await Promise.all (
-        getResponses (ns).map (rep => inputData.addSource (
-            "schema",
-            { name: rep.name, schema: JSON.stringify (rep.schema) },
-            () => new JSONSchemaInput (undefined)
+        getResponses (ns).map (rep => schemaInput.addSource (
+            { name: rep.name, schema: JSON.stringify (rep.schema) }
         ))
     )
+
+    const inputData = new InputData ()
+    inputData.addInput(schemaInput)
 
     console.log (`Generate Neutralino.${ns}`)
     const result = await quicktype ({
@@ -85,10 +86,10 @@ Promise.all (namespaces.map (async ns =>
 }))
 .then (dts => 
 {
-    const outpath = 'dist/neutralino-api-types.d.ts'
+    const outpath = 'neutralino-api-types.d.ts'
 
-    if (Fs.existsSync ('dist') === false)
-        Fs.mkdirSync ('dist', { recursive: true })
+    // if (Fs.existsSync ('dist') === false)
+    //     Fs.mkdirSync ('dist', { recursive: true })
 
     console.log (`Write ${outpath}`)
     Fs.writeFileSync (outpath, dts.join ('\n'), "utf8")
