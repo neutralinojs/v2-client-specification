@@ -1,9 +1,9 @@
 {
 	"name": "neutralino-api-types",
 	"version": "1.5.0",
-	"types": "neutralino-api-types.d.ts",
+	"types": "neutralino-api-types.ts",
 	"files": [
-		"neutralino-api-types.d.ts"
+		"neutralino-api-types.ts"
 	],
 	"devDependencies": {
 		"@types/node": "^16.10.2",
@@ -12,7 +12,7 @@
 		"yaml": "^1.10.2"
 	},
 	"scripts": {
-		"dts": "node ./scripts/gendts.mjs",
+		"generate": "node ./scripts/generate.mjs",
 		"pack": "npm pack"
 	}
 }

@@ -81,13 +81,13 @@ Promise.all (namespaces.map (async ns =>
     })
 
     return '\n'
-         + `declare module 'Neutralino.${ns}' {\n\n`
+         + `export module ${ns} {\n\n`
          +  result.lines.join ('\n')
          + '\n}'
 }))
 .then (dts => 
 {
-    const filename = 'neutralino-api-types.d.ts'
+    const filename = 'neutralino-api-types.ts'
 
     console.log (`Write ${filename}`)
     Fs.writeFileSync (joinPath (root, filename), dts.join ('\n'), "utf8")
