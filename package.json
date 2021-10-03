@@ -1,0 +1,11 @@
+{
+	"dependencies": {
+		"@types/node": "^16.10.2",
+		"quicktype": "^15.0.260",
+		"quicktype-core": "^6.0.70",
+		"yaml": "^1.10.2"
+	},
+	"scripts": {
+		"dts": "node ./scripts/gendts.mjs "
+	}
+}

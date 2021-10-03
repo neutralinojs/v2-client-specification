@@ -1,0 +1,311 @@
+openapi: 3.0.2
+info:
+  title: neutralino
+  version: '1.5.0'
+servers:
+  - url: 'http://localhost'
+    description: ''
+security:
+  - basicAuth: []
+x-ref: |-
+  - https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/app.md
+  - https://github.com/neutralinojs/neutralinojs/blob/main/api/app/app.cpp
+  - https://github.com/neutralinojs/neutralino.js/blob/main/src/api/app.ts
+paths:
+  '/{SCOPE}app.exit':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    post:
+      operationId: app::controllers::exit
+      description: Terminates the running application.
+      tags:
+        - NativeMethod
+      requestBody:
+        $ref: '#/components/requestBodies/ExitRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+      x-doc: |-
+        ```js
+        await Neutralino.app.exit(130);
+
+        await Neutralino.app.exit();
+        ```
+  '/{SCOPE}app.getConfig':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      operationId: app::controllers::getconfig
+      description: Returns the current application configuration as a JSON object.
+      tags:
+        - NativeMethod
+      responses:
+        '200':
+          $ref: '#/components/responses/GetConfigResponse'
+      x-note: 'maxWidth, maxHeight, binaryVersion and clientVersion not found in default neutralino.config.json'
+  '/{SCOPE}app.keepAlive':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      operationId: app::controllers::keepalive
+      description: |-
+        The keepAlive method is responsible for saving the Neutralinojs server instance from the automatic termination.
+        This method is called automatically from the client library for the browser mode.
+      tags:
+        - NativeMethod
+      responses:
+        '200':
+          $ref: '#/components/responses/KeepAliveResponse'
+      x-doc: |-
+        ```js
+        await Neutralino.app.keepAlive();
+        ```
+  '/{SCOPE}app.killProcess':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      operationId: app::controllers::killprocess
+      description: |-
+        Kills the application process.
+        If the application becomes unresponsive, you can use this to terminate the process instantly.
+        However, we recommend you to use the `exit()` method to close your application properly.
+      tags:
+        - NativeMethod
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+      x-doc: |-
+        ```js
+        await Neutralino.app.killProcess();
+        ```
+components:
+  securitySchemes:
+    basicAuth:
+      name: Authorization
+      type: apiKey
+      in: header
+  parameters:
+    'SCOPE':
+      name: scope
+      in: path
+      required: true
+      schema:
+        type: string
+        default: __nativeMethod_
+  requestBodies:
+    ExitRequest:
+      content:
+        application/json:
+          schema:
+            title: ExitQuery
+            type: object
+            properties:
+              exitCode:
+                type: integer
+                description: An integer value for the process's exit code. The default value is always `0` (success).
+  responses:
+    AlwaysSuccessResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+                description: Always true
+            required:
+              - success
+    GetConfigResponse:
+      description: Application configuration
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              returnValue:
+                type: object
+                nullable: true
+                required:
+                  - applicationId
+                  - defaultMode
+                  - port
+                  - url
+                  - enableHTTPServer
+                  - enableNativeAPI
+                  - nativeBlockList
+                  - globalVariables
+                  - modes
+                  - cli
+                properties:
+                  applicationId:
+                    type: string
+                    description: 'Unique string to identify your application. Eg: `js.neutralino.sample`'
+                    default: js.neutralino.sample
+                  defaultMode:
+                    type: string
+                    description: 'Mode of the application. Accepted values are `window`, `browser`, and `cloud`.'
+                    default: window
+                    enum:
+                      - window
+                      - browser
+                      - cloud
+                  port:
+                    type: integer
+                    description: 'The port of your application. If the value is `0`, Neutralinojs will use a random available port.'
+                  url:
+                    type: string
+                    description: |-
+                      The entry URL of the application. Neutralinojs will initially load this URL.
+                      This property accepts both relative and absolute URLs.
+                    default: /resources/
+                  enableHTTPServer:
+                    type: boolean
+                    description: Enables or disables the background server (The static file server and native API).
+                    default: true
+                  enableNativeAPI:
+                    type: boolean
+                    description: |-
+                      Enables or disables the native API. For better security, this setting should be `false` if you are using a
+                      remote URL as your web frontend.
+                    default: true
+                  nativeBlockList:
+                    type: array
+                    description: An array of native methods needs to be blocked from the frontend of the application.
+                    items:
+                      type: string
+                  globalVariables:
+                    type: object
+                    description: 'A key-value-based JavaScript object of custom [global variables](../developer-environment/global-variables#custom-global-variables).'
+                  modes:
+                    type: object
+                    required:
+                      - window
+                      - browser
+                      - cloud
+                    properties:
+                      window:
+                        type: object
+                        required:
+                          - title
+                          - width
+                          - height
+                          - minWidth
+                          - minHeight
+                          - fullScreen
+                          - alwaysOnTop
+                          - icon
+                          - enableInspector
+                          - borderless
+                          - maximize
+                          - hidden
+                          - resizable
+                        properties:
+                          title:
+                            type: string
+                            description: Title of the native window.
+                            default: Neutralinojs app
+                          width:
+                            type: integer
+                            description: Width of the native window.
+                            default: 800
+                          height:
+                            type: integer
+                            description: Height of the native window.
+                            default: 500
+                          maxWidth:
+                            type: number
+                            description: Maximum width of the native window.
+                          maxHeight:
+                            type: number
+                            description: Maximum height of the native window.
+                          minWidth:
+                            type: integer
+                            description: Minimum width of the native window.
+                            default: 400
+                          minHeight:
+                            type: integer
+                            description: Minimum height of the native window.
+                            default: 200
+                          fullScreen:
+                            type: boolean
+                            description: Activates the full-screen mode.
+                            default: false
+                          alwaysOnTop:
+                            type: boolean
+                            description: Activates the top-most mode.
+                            default: false
+                          icon:
+                            type: string
+                            description: |-
+                              Application icon's file name. You can directly point to an image file in the
+                              resources directory. We recommend you to choose a transparent PNG file.
+                            default: /resources/icons/appIcon.png
+                          enableInspector:
+                            type: boolean
+                            description: Automatically opens the developer tools window.
+                            default: true
+                          borderless:
+                            type: boolean
+                            description: Activates the borderless mode.
+                            default: false
+                          maximize:
+                            type: boolean
+                            description: Launches the application maximized.
+                            default: false
+                          hidden:
+                            type: boolean
+                            description: Make the window invisible. This setting can be used to develop background services.
+                            default: false
+                          resizable:
+                            type: boolean
+                            description: Make the window resizable or not. The default value is `true`.
+                            default: true
+                      browser:
+                        type: object
+                      cloud:
+                        type: object
+                  cli:
+                    type: object
+                    required:
+                      - binaryName
+                      - resourcesPath
+                      - clientLibrary
+                    properties:
+                      binaryName:
+                        type: string
+                        description: |-
+                          Binary file name of your application. If it is `myapp`, all binaries should use
+                          `myapp-<platform>` format.
+                        default: neutralino
+                      resourcesPath:
+                        type: string
+                        description: Path of your application resources.
+                        default: /resources/
+                      clientLibrary:
+                        type: string
+                        description: Filename of the Neutralinojs JavaScript library.
+                        default: /resources/js/neutralino.js
+                      binaryVersion:
+                        type: string
+                        description: Neutralinojs server version. neu CLI adds this property when the project is scaffolded.
+                      clientVersion:
+                        type: string
+                        description: Neutralinojs client version. neu CLI adds this property when the project is scaffolded.
+            required:
+              - success
+              - returnValue
+    KeepAliveResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string

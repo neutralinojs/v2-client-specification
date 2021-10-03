@@ -1,0 +1,276 @@
+openapi: 3.0.2
+info:
+  title: neutralino
+  version: '1.5.0'
+servers:
+  - url: 'http://localhost'
+    description: ''
+security:
+  - basicAuth: []
+x-ref: |-
+  - https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/window.md
+  - https://github.com/neutralinojs/neutralinojs/blob/main/api/window/window.cpp
+  - https://github.com/neutralinojs/neutralino.js/blob/main/src/api/window.ts
+paths:
+  '/{SCOPE}window.setTitle':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    post:
+      description: Sets the title of the native window.
+      requestBody:
+        $ref: '#/components/requestBodies/SetTitleRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.setSize':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    post:
+      description: |-
+        Converts a give DOM element to a draggable region.
+        The user will be able to drag the native window by dragging the given DOM element.
+        This feature is suitable to make custom window bars along with the [borderless mode](https://neutralino.js.org/docs/configuration/neutralino.config.json#modeswindowborderless-boolean).
+      requestBody:
+        $ref: '#/components/requestBodies/SetSizeRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.setIcon':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    post:
+      description: Sets an icon for the native window or Dock.
+      requestBody:
+        $ref: '#/components/requestBodies/SetIconRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.maximize':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Maximizes the native window.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.unmaximize':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Restores the native window.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.minimize':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Minimizes the native window.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.isMaximized':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Returns true if the native window is maximized.
+      responses:
+        '200':
+          $ref: '#/components/responses/IsMaximizedResponse'
+  '/{SCOPE}window.setFullScreen':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Enables the full screen mode.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.exitFullScreen':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Exits from the full screen mode.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.isFullScreen':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Returns true if the native window is in the full screen mode.
+      responses:
+        '200':
+          $ref: '#/components/responses/IsFullScreenResponse'
+  '/{SCOPE}window.show':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Shows the native window.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.hide':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Hides the native window.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.isVisible':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Returns true if the native window is visible.
+      responses:
+        '200':
+          $ref: '#/components/responses/IsVisibleResponse'
+  '/{SCOPE}window.focus':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    get:
+      description: Focuses the native window.
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  '/{SCOPE}window.move':
+    parameters:
+      - $ref: '#/components/parameters/SCOPE'
+    post:
+      description: |-
+        Moves the native window into given coordinates. Neutralinojs's cross-platform coordinate system starts from top-left corner of the screen.
+        In other words, x=0,y=0 point refers to the top-left corner of the device's main screen.
+      requestBody:
+        $ref: '#/components/requestBodies/MoveRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+components:
+  securitySchemes:
+    basicAuth:
+      name: Authorization
+      type: apiKey
+      in: header
+  parameters:
+    'SCOPE':
+      name: scope
+      in: path
+      required: true
+      schema:
+        type: string
+        default: __nativeMethod_
+  requestBodies:
+    SetTitleRequest:
+      content:
+        application/json:
+          schema:
+            title: SetTitleQuery
+            properties:
+              title:
+                type: string
+                description: Title of the window as a string.
+            required:
+              - title
+    SetSizeRequest:
+      content:
+        application/json:
+          schema:
+            title: SetSizeQuery
+            type: object
+            properties:
+              width:
+                type: number
+                description: Window width in pixels.
+              height:
+                type: number
+                description: Window height in pixels.
+              minWidth:
+                type: number
+                description: Minimum width of the window in pixels.
+              minHeight:
+                type: number
+                description: Minimum height of the window in pixels.
+              maxWidth:
+                type: number
+                description: Maximum width of the window in pixels.
+              maxHeight:
+                type: number
+                description: Maximum height of the window in pixels.
+              resizable:
+                type: number
+                description: A boolean value to make the window resizable or fixed.
+    SetIconRequest:
+      content:
+        application/json:
+          schema:
+            title: SetIconQuery
+            type: object
+            properties:
+              icon:
+                type: string
+                description: 'icon: Path of the icon. A 200x200 PNG image file works fine on all supported operating systems.'
+            required:
+              - icon
+    MoveRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              x:
+                type: number
+                description: A integer value for the horizontal position.
+              'y':
+                type: number
+                description: A integer value for the vertical position.
+            required:
+              - x
+              - 'y'
+  responses:
+    AlwaysSuccessResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+                description: Always true
+            required:
+              - success
+    IsMaximizedResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              returnValue:
+                type: boolean
+    IsFullScreenResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              returnValue:
+                type: boolean
+    IsVisibleResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            title: IsVisibleReturnValue
+            type: object
+            properties:
+              success:
+                type: boolean
+              returnValue:
+                type: boolean
