@@ -1,0 +1,74 @@
+openapi: 3.0.2
+info:
+  title: neutralino-os-api
+  version: 1.5.0
+servers:
+  - url: 'http://localhost:5050'
+x-ref: |-
+  - https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/os.md
+  - https://github.com/neutralinojs/neutralinojs/blob/main/api/os/os.cpp
+  - https://github.com/neutralinojs/neutralino.js/blob/main/src/api/os.ts
+paths:
+  /os.open:
+    description: Opens a URL with the default web browser.
+    x-doc: ':::tip If your application is running on the default web browser, this method will open a new tab. :::'
+    post:
+      tags:
+        - NativeMethod
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+      x-note: 'TODO https://neutralino.js.org/docs/api/app -> https://neutralino.js.org/docs/api/os'
+  /os.execCommand:
+    description: Executes a command and returns the output.
+    post:
+      tags:
+        - NativeMethod
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                  description: The command needs to be executed.
+                shouldRunInBackground:
+                  type: boolean
+              required:
+                - command
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output:
+                    type: string
+                    description: String data taken from the both standard output (STDOUT) and standard error (STDERR) streams of the command's process.
+                required:
+                  - output
+        x-doc: |-
+          ```js
+          let response = await Neutralino.os.execCommand({
+            command: 'python --version'
+          });
+          console.log(`Your Python version: ${response.output}`);
+          ```
+components:
+  responses:
+    AlwaysSuccessResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+                description: Always true
+            required:
+              - success

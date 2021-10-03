@@ -1,22 +1,23 @@
 #!node
 
-//@ts-check
-
 import Fs from 'fs'
+import { join as joinPath, dirname } from 'path'
+import { fileURLToPath } from 'url'
 import Yaml from 'yaml'
 import { quicktype, InputData, JSONSchemaInput, FetchingJSONSchemaStore } from 'quicktype-core'
 
-const namespaces = [
-    'app',
-    'window'
-]
+// https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
+const root = joinPath (dirname (fileURLToPath (import.meta.url)), '..')
+const namespaces = ['app', 'window']
+
+//@ts-check
 
 /**
  * @param apiNamespace {string} - `app`, `os`, `window`, ...
  */
 function getResponses (apiNamespace)
 {
-    const path = 'neu-' + apiNamespace + '.yaml'
+    const path = joinPath (root, 'api', apiNamespace + '.yaml')
     const yaml = Yaml.parse (Fs.readFileSync (path, 'utf8'))
 
     /** @type {Record <string, import ('./openapi').OpenAPIV3.ResponseObject>} */
@@ -38,7 +39,7 @@ function getResponses (apiNamespace)
             throw new Error (
                 'This script does not support the "example" field in the response object, ' +
                 'use the "examples" fields instead\n' +
-                `${path}#/components/responses/${name}/content/application/json`)
+                `${apiNamespace}.yaml#/components/responses/${name}/content/application/json`)
 
         cnt.schema.title = name
         
@@ -86,12 +87,9 @@ Promise.all (namespaces.map (async ns =>
 }))
 .then (dts => 
 {
-    const outpath = 'neutralino-api-types.d.ts'
+    const filename = 'neutralino-api-types.d.ts'
 
-    // if (Fs.existsSync ('dist') === false)
-    //     Fs.mkdirSync ('dist', { recursive: true })
-
-    console.log (`Write ${outpath}`)
-    Fs.writeFileSync (outpath, dts.join ('\n'), "utf8")
+    console.log (`Write ${filename}`)
+    Fs.writeFileSync (joinPath (root, filename), dts.join ('\n'), "utf8")
 })
 

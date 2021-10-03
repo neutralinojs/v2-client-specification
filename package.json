@@ -5,7 +5,7 @@
 	"files": [
 		"neutralino-api-types.d.ts"
 	],
-	"dependencies": {
+	"devDependencies": {
 		"@types/node": "^16.10.2",
 		"quicktype": "^15.0.260",
 		"quicktype-core": "^6.0.70",
