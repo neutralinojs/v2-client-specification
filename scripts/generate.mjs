@@ -23,8 +23,8 @@ import { fileURLToPath } from 'url'
 //@ts-ignore
 const __dirname = dirname (fileURLToPath (import.meta.url))
 
-import {  getResponses, getNeutralinoApi, writeFlattenApis } from '../api/.lib.js'
-/** @typedef {import ('../api/.lib').OADocument} OADocument */
+import {  getResponses, getNeutralinoApi, writeFlattenApis } from '../api/api.js'
+/** @typedef {import ('../api/api').OADocument} OADocument */
 
 async function main ()
 {

@@ -14,6 +14,7 @@ servers:
 security:
   - basicAuth: []
 
+# !! api.js assumes this field exists, don't delete it !!
 paths: {}
 
 components:
@@ -24,6 +25,7 @@ components:
       in: header
       name: Authorization 
 
+  # !! api.js assumes these fields exist, don't delete it !!
   requestBodies: {}
   responses: {}
   schemas: {}
