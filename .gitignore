@@ -1,4 +1,18 @@
 
+
 /.vscode
 /node_modules
+/out
+/*.log
+
+# make test-app
+/bin
+/resources/icons
+/resources/js
+
+# tmp
+/tools
 /*.ts
+/*.schema.json
+/resources/*.test.ts
+/makefile-tmp

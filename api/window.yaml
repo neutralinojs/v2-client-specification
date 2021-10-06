@@ -1,146 +1,195 @@
 openapi: 3.0.2
 info:
-  title: neutralino-window-api
+  title: Neutralino.window
   version: 1.5.0
-  description: ''
+  description: |-
+    `Neutralino.window` namespace contains methods related to the current native window instance.
+    This namespace's methods will work only for the [window](https://neutralino.js.org/docs/configuration/modes#window) mode.
 servers:
-  - url: 'http://localhost'
-    description: ''
-security:
-  - basicAuth: []
-x-ref: |-
-  - https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/window.md
-  - https://github.com/neutralinojs/neutralinojs/blob/main/api/window/window.cpp
-  - https://github.com/neutralinojs/neutralino.js/blob/main/src/api/window.ts
+  - url: http://localhost
+x-ref: |
+  https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/window.md
+  https://github.com/neutralinojs/neutralinojs/blob/main/api/window/window.cpp
+  https://github.com/neutralinojs/neutralino.js/blob/main/src/api/window.ts
 paths:
-  '/{SCOPE}window.setTitle':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+  /window.setTitle:
     post:
+      summary: setTitle
+      operationId: Neutrlino.window.setTitle
       description: Sets the title of the native window.
+      tags:
+        - Window
       requestBody:
         $ref: '#/components/requestBodies/SetTitleRequest'
       responses:
         '200':
           $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.setSize':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS
+          source: Neutralino.window.setTitle('New title')
+  /window.setSize:
     post:
-      description: |-
-        Converts a give DOM element to a draggable region.
-        The user will be able to drag the native window by dragging the given DOM element.
+      summary: setSize
+      operationId: neutralino_window_post_size
+      description: |
+        Resize the native window. \
         This feature is suitable to make custom window bars along with the [borderless mode](https://neutralino.js.org/docs/configuration/neutralino.config.json#modeswindowborderless-boolean).
+
+        This method always expects width and height couples. \
+        For example, if you are sending `minWidth`, you should send `minHeight` too.
+        ```js
+        await Neutralino.window.setSize({
+            width: 500,
+            height: 200,
+            maxWidth: 600,
+            maxHeight: 400
+        });
+
+        await Neutralino.window.setSize({
+            resizable: false
+        });
+        ```
+      tags:
+        - Window
       requestBody:
         $ref: '#/components/requestBodies/SetSizeRequest'
       responses:
         '200':
           $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.setIcon':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+  /window.setIcon:
     post:
+      summary: setIcon
+      operationId: Neutralino.window.setIcon
       description: Sets an icon for the native window or Dock.
+      tags:
+        - Window
       requestBody:
         $ref: '#/components/requestBodies/SetIconRequest'
       responses:
         '200':
           $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.maximize':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+      x-doc: const icon = '/resources/icons/appIcon.png'; await Neutralino.window.setIcon(icon);
+  /window.focus:
     get:
-      description: Maximizes the native window.
+      summary: focus
+      operationId: Neutralino.window.focus
+      description: Focuses the native window.
+      tags:
+        - Window
       responses:
         '200':
           $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.unmaximize':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+  /window.hide:
     get:
-      description: Restores the native window.
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.minimize':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
-    get:
-      description: Minimizes the native window.
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.isMaximized':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
-    get:
-      description: Returns true if the native window is maximized.
-      responses:
-        '200':
-          $ref: '#/components/responses/IsMaximizedResponse'
-  '/{SCOPE}window.setFullScreen':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
-    get:
-      description: Enables the full screen mode.
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.exitFullScreen':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
-    get:
-      description: Exits from the full screen mode.
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.isFullScreen':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
-    get:
-      description: Returns true if the native window is in the full screen mode.
-      responses:
-        '200':
-          $ref: '#/components/responses/IsFullScreenResponse'
-  '/{SCOPE}window.show':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
-    get:
-      description: Shows the native window.
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.hide':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
-    get:
+      summary: hide
+      operationId: Neutralino.window.hide
       description: Hides the native window.
+      tags:
+        - Window
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.isVisible':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+  /window.isVisible:
     get:
+      summary: isVisible
+      operationId: Neutralino.window.isVisible
       description: Returns true if the native window is visible.
+      tags:
+        - Window
       responses:
         '200':
           $ref: '#/components/responses/IsVisibleResponse'
-  '/{SCOPE}window.focus':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+  /window.show:
     get:
-      description: Focuses the native window.
+      summary: show
+      operationId: Neutralino.window.show
+      description: Shows the native window.
+      tags:
+        - Window
       responses:
         '200':
           $ref: '#/components/responses/AlwaysSuccessResponse'
-  '/{SCOPE}window.move':
-    parameters:
-      - $ref: '#/components/parameters/SCOPE'
+  /window.minimize:
+    get:
+      summary: minimize
+      operationId: Neutralino.window.minimize
+      description: Minimizes the native window.
+      tags:
+        - Window
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  /window.maximize:
+    get:
+      summary: maximize
+      operationId: Neutralino.window.maximize
+      description: Maximizes the native window.
+      tags:
+        - Window
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  /window.isMaximized:
+    get:
+      summary: isMaximized
+      operationId: Neutralino.window.isMaximized
+      description: Returns true if the native window is maximized.
+      tags:
+        - Window
+      responses:
+        '200':
+          $ref: '#/components/responses/IsMaximizedResponse'
+  /window.unmaximize:
+    get:
+      summary: unmaximize
+      operationId: Neutralino.window.unmaximize
+      description: Restores the native window.
+      tags:
+        - Window
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  /window.setFullScreen:
+    get:
+      summary: setFullScreen
+      operationId: Neutralino.window.setFullScreen
+      description: Enables the full screen mode.
+      tags:
+        - Window
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  /window.isFullScreen:
+    get:
+      summary: isFullScreen
+      operationId: Neutralino.window.isFullScreen
+      description: Returns true if the native window is in the full screen mode.
+      tags:
+        - Window
+      responses:
+        '200':
+          $ref: '#/components/responses/IsFullScreenResponse'
+  /window.exitFullScreen:
+    get:
+      summary: exitFullScreen
+      operationId: Neutralino.window.exitFullScreen
+      description: Exits from the full screen mode.
+      tags:
+        - Window
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+  /window.move:
     post:
-      description: |-
-        Moves the native window into given coordinates. Neutralinojs's cross-platform coordinate system starts from top-left corner of the screen.
-        In other words, x=0,y=0 point refers to the top-left corner of the device's main screen.
+      summary: move
+      operationId: Neutralino.window.move
+      description: |
+        Moves the native window into given coordinates. \
+        Neutralinojs's cross-platform coordinate system starts from top-left corner of the screen.
+        In other words, `x=0,y=0` point refers to the top-left corner of the device's main screen.
+      tags:
+        - Window
       requestBody:
         $ref: '#/components/requestBodies/MoveRequest'
       responses:
@@ -152,14 +201,6 @@ components:
       name: Authorization
       type: apiKey
       in: header
-  parameters:
-    SCOPE:
-      name: scope
-      in: path
-      required: true
-      schema:
-        type: string
-        default: __nativeMethod_
   requestBodies:
     SetTitleRequest:
       content:
@@ -172,6 +213,10 @@ components:
                 description: Title of the window as a string.
             required:
               - title
+          examples:
+            default:
+              value:
+                title: New title
     SetSizeRequest:
       content:
         application/json:
@@ -209,7 +254,7 @@ components:
             properties:
               icon:
                 type: string
-                description: 'icon: Path of the icon. A 200x200 PNG image file works fine on all supported operating systems.'
+                description: Path of the icon. A `200x200` PNG image file works fine on all supported operating systems.
             required:
               - icon
     MoveRequest:
@@ -246,12 +291,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              returnValue:
-                type: boolean
+            type: boolean
     IsFullScreenResponse:
       description: OK
       content:
@@ -269,9 +309,4 @@ components:
         application/json:
           schema:
             title: IsVisibleReturnValue
-            type: object
-            properties:
-              success:
-                type: boolean
-              returnValue:
-                type: boolean
+            type: boolean

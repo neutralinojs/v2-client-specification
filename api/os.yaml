@@ -1,65 +1,252 @@
 openapi: 3.0.2
+
 info:
-  title: neutralino-os-api
+  title: Neutralino.os
   version: 1.5.0
+  description: '`Neutralino.os` namespace contains methods related to the user''s operating system.'
+
 servers:
-  - url: 'http://localhost:5050'
+  - url: 'http://localhost:{NL_PORT}'
+    description: Neutralino server
+    variables:
+      NL_PORT:
+        description: Application port
+        default: '65097'
+
+security:
+  - basicAuth: []
+
 x-ref: |-
   - https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/os.md
   - https://github.com/neutralinojs/neutralinojs/blob/main/api/os/os.cpp
   - https://github.com/neutralinojs/neutralino.js/blob/main/src/api/os.ts
+
 paths:
-  /os.open:
-    description: Opens a URL with the default web browser.
-    x-doc: ':::tip If your application is running on the default web browser, this method will open a new tab. :::'
+  
+  /__nativeMethod_os.execCommand:
     post:
+      operationId: Neutralino.os.execCommand
+      summary: execCommand
       tags:
-        - NativeMethod
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
-      x-note: 'TODO https://neutralino.js.org/docs/api/app -> https://neutralino.js.org/docs/api/os'
-  /os.execCommand:
-    description: Executes a command and returns the output.
-    post:
-      tags:
-        - NativeMethod
+        - OS
       requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                command:
-                  type: string
-                  description: The command needs to be executed.
-                shouldRunInBackground:
-                  type: boolean
-              required:
-                - command
+        $ref: '#/components/requestBodies/ExecCommandRequest'
       responses:
         '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  output:
-                    type: string
-                    description: String data taken from the both standard output (STDOUT) and standard error (STDERR) streams of the command's process.
-                required:
-                  - output
-        x-doc: |-
-          ```js
-          let response = await Neutralino.os.execCommand({
-            command: 'python --version'
-          });
-          console.log(`Your Python version: ${response.output}`);
-          ```
+          $ref: '#/components/responses/ExecCommandResponse'
+      description: |-
+        Executes a command and returns the output.
+
+        ```js
+        let response = await Neutralino.os.execCommand({
+          command: 'python --version'
+        });
+        console.log(`Your Python version: ${response.output}`);
+        ```
+  
+  /__nativeMethod_os.getEnvar:
+    post:
+      summary: getEnvar
+      operationId: Neutralino.os.getEnvar
+      tags:
+        - OS
+      requestBody:
+        $ref: '#/components/requestBodies/GetEnvarRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetEnvarResponse'
+      description: |-
+        Provides the value of a given environment variable.
+
+        ```js
+        let response = await Neutralino.os.getEnvar({
+          key: 'USER'
+        });
+        console.log(`USER = ${response.value}`);
+        ```
+  
+  /__nativeMethod_os.showOpenDialog:
+    post:
+      summary: showOpenDialog
+      operationId: Neutralino.os.showOpenDialog
+      tags:
+        - OS
+      requestBody:
+        $ref: '#/components/requestBodies/DialogOpenRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/DialogOpenResponse'
+      description: |-
+        Shows the file open dialog.
+
+        ```js
+        let response = await Neutralino.os.showDialogOpen({
+          title: 'Select a folder',
+          isDirectoryMode: true
+        });
+        console.log(`You've selected: ${response.selectedEntry}`);
+        ```
+  
+  /__nativeMethod_os.showSaveDialog:
+    post:
+      summary: showSaveDialog
+      operationId: Neutralino.os.showSaveDialog
+      tags:
+        - OS
+      requestBody:
+        $ref: '#/components/requestBodies/ShowSaveDialogRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ShowSaveDialogResponse'
+      description: |-
+        Shows the file save dialog.
+
+        ```js
+        let response = await Neutralino.os.showSaveDialog({
+          title: 'Save to a file'
+        });
+        console.log(`You've selected: ${response.selectedEntry}`);
+        ```
+  
+  /__nativeMethod_os.showNotification:
+    post:
+      summary: showNotification
+      operationId: Neutralino.os.showNotification
+      tags:
+        - OS
+      requestBody:
+        $ref: '#/components/requestBodies/ShowNotificationRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ShowNotificationResponse'
+      description: |-
+        Displays a notification message.
+        ```js
+        await Neutralino.os.showNotification({
+          summary: 'Hello world',
+          body: 'It works!. Have a nice day'
+        });
+        ```
+  
+  /__nativeMethod_os.showMessageBox:
+    post:
+      summary: showMessageBox
+      operationId: Neutralino.os.showMessageBox
+      tags:
+        - OS
+      requestBody:
+        $ref: '#/components/requestBodies/ShowMessageBoxRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ShowMessageBoxResponse'
+      description: Displays a message box.
+  
+  /__nativeMethod_os.setTray:
+    post:
+      summary: setTray
+      operationId: Neutralino.os.setTray
+      tags:
+        - OS
+      requestBody:
+        $ref: '#/components/requestBodies/SetTrayRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SetTrayResponse'
+      description: |-
+        Creates/updates the tray icon and menu.
+        ```js
+        let tray = {
+          icon: '/resources/icons/trayIcon.png',
+          menuItems: [
+            {id: "about", text: "About"},
+            {text: "-"},
+            {id: "quit", text: "Quit"}
+          ]
+        };
+        await Neutralino.os.setTray(tray);
+        ```
+  
+  /__nativeMethod_os.open:
+    post:
+      operationId: open
+      summary: Neutralino.os.open
+      tags:
+        - OS
+      requestBody:
+        $ref: '#/components/requestBodies/OpenRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/OpenResponse'
+      description: |-
+        Opens a URL with the default web browser.
+        :::tip If your application is running on the default web browser, this method will open a new tab. :::
+
 components:
+
+  securitySchemes:
+    basicAuth:
+      type: apiKey
+      in: header
+      name: Authorization 
+      description: |-
+        Neutralino server uses basic authorization but does not provide username and password entry.
+        So this definition of security is a "<i>substitute</i>".
+
+        To set a correct API key, type `"Basic "+ NL_TOKEN` in the Webview console and write the result in the `Authorization` field of an endpoint.
+
+  requestBodies:
+
+    ExecCommandRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExecCommandOptions'
+
+    GetEnvarRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetEnvarOptions'
+
+    DialogOpenRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DialogOpenOptions'
+
+    ShowSaveDialogRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ShowSaveDialogOptions'
+
+    ShowNotificationRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ShowNotificationOptions'
+
+    ShowMessageBoxRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ShowMessageBoxOptions'
+
+    SetTrayRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SetTrayOptions'
+
+    OpenRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OpenOptions'
+
   responses:
-    AlwaysSuccessResponse:
+
+    ExecCommandResponse:
       description: OK
       content:
         application/json:
@@ -68,7 +255,258 @@ components:
             properties:
               success:
                 type: boolean
-                default: true
-                description: Always true
+              output:
+                $ref: '#/components/schemas/ExecCommandResult'
             required:
               - success
+              - output
+
+    GetEnvarResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              returnValue:
+                $ref: '#/components/schemas/GetEnvarResult'
+            required:
+              - success
+              - returnValue
+
+    DialogOpenResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              returnValue:
+                $ref: '#/components/schemas/DialogOpenResult'
+            required:
+              - success
+              - returnValue
+
+    ShowSaveDialogResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              returnValue:
+                $ref: '#/components/schemas/ShowSaveDialogResult'
+            required:
+              - success
+              - returnValue
+
+    ShowNotificationResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+            required:
+              - success
+
+    ShowMessageBoxResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+            required:
+              - success
+
+    SetTrayResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+            required:
+              - success
+              
+    OpenResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+            required:
+              - success
+
+  schemas:
+
+    ExecCommandOptions:
+      type: object
+      properties:
+        command:
+          type: string
+          description: The command needs to be executed.
+        shouldRunInBackground:
+          type: boolean
+      required:
+        - command
+      example:
+        command: python --version
+
+    ExecCommandResult:
+      type: string
+      description: String data taken from the both standard output (STDOUT) and standard error (STDERR) streams of the command's process.
+    GetEnvarOptions:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The name of the environment variable.
+      required:
+        - key
+      example:
+        key: USER
+
+    GetEnvarResult:
+      type: string
+      description: Value of the given environment variable.
+
+    DialogOpenOptions:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the dialog.
+        isDirectoryMode:
+          type: boolean
+          description: A boolean value to allow directories to be selected. The default value is `false`.
+        filter:
+          type: array
+          items:
+            type: string
+          description: 'An array of file extensions to filter the file list.  Eg: `filter: [''js'', ''ts'', ''*'']`.'
+      required:
+        - title
+      example:
+        title: Select a folder
+        isDirectoryMode: true
+
+    DialogOpenResult:
+      type: string
+      description: The selected value (a folder or directory).
+
+    ShowSaveDialogOptions:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the dialog.
+      required:
+        - title
+      example:
+        title: Save to a file
+
+    ShowSaveDialogResult:
+      type: string
+      description: The selected value (a folder or directory).
+
+    ShowNotificationOptions:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the dialog.
+        content:
+          type: string
+          description: Content of the notification.
+      required:
+        - title
+        - content
+      example:
+        type: Hello world
+        content: It works!. Have a nice day
+
+    ShowMessageBoxOptions:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the message box.
+          example: Save to a file
+        content:
+          type: string
+          description: Content of the message box.
+        type:
+          type: string
+          enum:
+            - WARN
+            - ERROR
+            - INFO
+            - QUESTION
+          description: 'Message box type. Accepted values are `WARN`, `ERROR`, `INFO`, and `QUESTION`.'
+          example: INFO
+
+    SetTrayOptions:
+      type: object
+      properties:
+        icon:
+          type: string
+        menu:
+          type: array
+          items:
+            $ref: '#/components/schemas/SetTrayItemOptions'
+      x-examples:
+        example:
+          icon: /resources/icons/trayIcon.png
+          menuItems:
+            - id: about
+              text: About
+            - text: '-'
+            - id: quit
+              text: Quit
+
+    SetTrayItemOptions:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Label of the menu item. This field is a mandatory field. Use `-` (hyphen) character for a menu separator.
+        id:
+          type: string
+          description: A unique identifier for each menu item.
+        isDisabled:
+          type: boolean
+          description: A boolean flag to disable/enable a specific menu item.
+        isChecked:
+          type: boolean
+          description: A boolean flag to mark a specific menu item as selected.
+      required:
+        - text
+
+    OpenOptions:
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL to be opened (required).
+      required:
+        - url
+      x-examples:
+        example:
+          url: 'https://neutralino.js.org'

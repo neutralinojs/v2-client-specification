@@ -1,0 +1,155 @@
+type: object
+properties:
+  applicationId:
+    type: string
+    description: 'Unique string to identify your application. Eg: `js.neutralino.sample`'
+    default: js.neutralino.sample
+  defaultMode:
+    type: string
+    description: 'Mode of the application. Accepted values are `window`, `browser`, and `cloud`.'
+    default: window
+    enum:
+      - window
+      - browser
+      - cloud
+  port:
+    type: integer
+    description: 'The port of your application. If the value is `0`, Neutralinojs will use a random available port.'
+  url:
+    type: string
+    description: |-
+      The entry URL of the application. Neutralinojs will initially load this URL.
+      This property accepts both relative and absolute URLs.
+    default: /resources/
+  enableHTTPServer:
+    type: boolean
+    description: Enables or disables the background server (The static file server and native API).
+    default: true
+  enableNativeAPI:
+    type: boolean
+    description: |-
+      Enables or disables the native API. For better security, this setting should be `false` if you are using a
+      remote URL as your web frontend.
+    default: true
+  nativeBlockList:
+    type: array
+    description: An array of native methods needs to be blocked from the frontend of the application.
+    items:
+      type: string
+  globalVariables:
+    type: object
+    description: 'A key-value-based JavaScript object of custom [global variables](../developer-environment/global-variables#custom-global-variables).'
+  modes:
+    type: object
+    required:
+      - window
+      - browser
+      - cloud
+    properties:
+      window:
+        type: object
+        required:
+          - title
+        properties:
+          title:
+            type: string
+            description: Title of the native window.
+            default: Neutralinojs app
+          width:
+            type: integer
+            description: Width of the native window.
+            default: 800
+          height:
+            type: integer
+            description: Height of the native window.
+            default: 500
+          maxWidth:
+            type: number
+            description: Maximum width of the native window.
+          maxHeight:
+            type: number
+            description: Maximum height of the native window.
+          minWidth:
+            type: integer
+            description: Minimum width of the native window.
+            default: 400
+          minHeight:
+            type: integer
+            description: Minimum height of the native window.
+            default: 200
+          fullScreen:
+            type: boolean
+            description: Activates the full-screen mode.
+            default: false
+          alwaysOnTop:
+            type: boolean
+            description: Activates the top-most mode.
+            default: false
+          icon:
+            type: string
+            description: |-
+              Application icon's file name. You can directly point to an image file in the
+              resources directory. We recommend you to choose a transparent PNG file.
+            default: /resources/icons/appIcon.png
+          enableInspector:
+            type: boolean
+            description: Automatically opens the developer tools window.
+            default: true
+          borderless:
+            type: boolean
+            description: Activates the borderless mode.
+            default: false
+          maximize:
+            type: boolean
+            description: Launches the application maximized.
+            default: false
+          hidden:
+            type: boolean
+            description: Make the window invisible. This setting can be used to develop background services.
+            default: false
+          resizable:
+            type: boolean
+            description: Make the window resizable or not. The default value is `true`.
+            default: true
+      browser:
+        type: object
+      cloud:
+        type: object
+  cli:
+    type: object
+    required:
+      - binaryName
+      - resourcesPath
+      - clientLibrary
+    properties:
+      binaryName:
+        type: string
+        description: |-
+          Binary file name of your application. If it is `myapp`, all binaries should use
+          `myapp-<platform>` format.
+        default: neutralino
+      resourcesPath:
+        type: string
+        description: Path of your application resources.
+        default: /resources/
+      clientLibrary:
+        type: string
+        description: Filename of the Neutralinojs JavaScript library.
+        default: /resources/js/neutralino.js
+      binaryVersion:
+        type: string
+        description: Neutralinojs server version. neu CLI adds this property when the project is scaffolded.
+      clientVersion:
+        type: string
+        description: Neutralinojs client version. neu CLI adds this property when the project is scaffolded.
+required:
+  - applicationId
+  - defaultMode
+  - port
+  - url
+  - enableHTTPServer
+  - enableNativeAPI
+  - nativeBlockList
+  - globalVariables
+  - modes
+  - cli

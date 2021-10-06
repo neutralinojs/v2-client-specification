@@ -1,68 +1,84 @@
 #!node
 
+/*/
+    Neutralino's global source structure associates one file with an API namespace.
+
+    For the `Neutralino.app` namespace, there is
+    - `app.cpp` in the server repository
+    - `app.ts` in the client repository
+    - `app.md` in documentation
+
+    Likewise, there is one API definition file per namespace in the 'api' directory.
+    - `app.yaml`
+
+    Each API definition must be a root OpenApi file.
+/*/
+
+// @ts-check
+
 import Fs from 'fs'
 import { join as joinPath, dirname } from 'path'
 import { fileURLToPath } from 'url'
-import Yaml from 'yaml'
-import { quicktype, InputData, JSONSchemaInput, FetchingJSONSchemaStore } from 'quicktype-core'
-
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag
-const root = joinPath (dirname (fileURLToPath (import.meta.url)), '..')
-const namespaces = ['app', 'window']
+//@ts-ignore
+const __dirname = dirname (fileURLToPath (import.meta.url))
 
-//@ts-check
+import {  getResponses, getNeutralinoApi, writeFlattenApis } from '../api/.lib.js'
+/** @typedef {import ('../api/.lib').OADocument} OADocument */
 
-/**
- * @param apiNamespace {string} - `app`, `os`, `window`, ...
- */
-function getResponses (apiNamespace)
+async function main ()
 {
-    const path = joinPath (root, 'api', apiNamespace + '.yaml')
-    const yaml = Yaml.parse (Fs.readFileSync (path, 'utf8'))
+    const root = joinPath (__dirname, '..')
+    const Api = await getNeutralinoApi ()
 
-    /** @type {Record <string, import ('./openapi').OpenAPIV3.ResponseObject>} */
-    const responses = yaml["components"]
-                    ? yaml["components"]["responses"]
-                    : null
-    if (responses == null) return []
-
-    const schemas = []
-    for (let name in responses)
+    if (process.argv.includes ('--all'))
     {
-        var rep = responses[name]
-        var cnt = rep.content["application/json"]
+        process.argv.push ('--dts')
+        process.argv.push ('--schema')
+        process.argv.push ('--test')
+    }
 
-        if ('$ref' in cnt.schema)
-            throw new Error ('This script does not support JSON references')
+    // Generate the typescript definitions file.
+    if (process.argv.includes ('--dts'))
+    {
+        Promise.all (Object.entries (Api).map
+        (
+            ([ns, doc]) => formatTsInterfaces (ns, doc)
+        ))
+        .then (dts => 
+        {
+            const filename = 'neutralino-api-types.ts'
 
-        if (cnt.example)
-            throw new Error (
-                'This script does not support the "example" field in the response object, ' +
-                'use the "examples" fields instead\n' +
-                `${apiNamespace}.yaml#/components/responses/${name}/content/application/json`)
-
-        cnt.schema.title = name
-        
-        schemas.push ({
-            name,
-            description : rep.description,
-            headers     : rep.headers,
-            links       : rep.links,
-            ...cnt
+            console.log (`Write ${filename}`)
+            Fs.writeFileSync (joinPath (root, filename), dts.join ('\n'), "utf8")
         })
     }
-    
-    return schemas
+
+    // Only convert YAML schema file to JSON.
+    if (process.argv.includes ('--schema'))
+        writeFlattenApis ()
+
+    if (process.argv.includes ('--test'))
+    {
+
+    }
 }
 
 
-Promise.all (namespaces.map (async ns =>
+/**
+ * @param ns {string}
+ * @param doc {OADocument}
+ */
+const formatTsInterfaces = async (ns, doc) =>
 {
-    const schemaInput = new JSONSchemaInput (new FetchingJSONSchemaStore ())
+    const { quicktype, InputData, JSONSchemaInput, FetchingJSONSchemaStore } = await import ('quicktype-core')
+    
+    const responses = await getResponses (doc)
 
-    // Shared definitions (like Always Success Response) are replaced
+    // Shared definitions are replaced
+    const schemaInput = new JSONSchemaInput (new FetchingJSONSchemaStore ())
     await Promise.all (
-        getResponses (ns).map (rep => schemaInput.addSource (
+        responses.map (rep => schemaInput.addSource (
             { name: rep.name, schema: JSON.stringify (rep.schema) }
         ))
     )
@@ -70,7 +86,7 @@ Promise.all (namespaces.map (async ns =>
     const inputData = new InputData ()
     inputData.addInput(schemaInput)
 
-    console.log (`Generate Neutralino.${ns}`)
+    console.log (`Generate ${ns}`)
     const result = await quicktype ({
         inputData,
         lang: "ts",
@@ -81,15 +97,18 @@ Promise.all (namespaces.map (async ns =>
     })
 
     return '\n'
+         + '/**\n'
+         +  doc.info.description
+         + '\n*/\n'
          + `export module ${ns} {\n\n`
          +  result.lines.join ('\n')
          + '\n}'
-}))
-.then (dts => 
+}
+
+function logError (err) 
 {
-    const filename = 'neutralino-api-types.ts'
+    if (err)
+        console.log ('\n###\n' + err + '\n###\n')
+}
 
-    console.log (`Write ${filename}`)
-    Fs.writeFileSync (joinPath (root, filename), dts.join ('\n'), "utf8")
-})
-
+main ().catch (logError)
