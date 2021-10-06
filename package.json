@@ -8,23 +8,13 @@
 	],
 	"devDependencies": {
 		"@apidevtools/json-schema-ref-parser": "^9.0.9",
+		"@stoplight/elements-core": "^7.3.6",
 		"@stoplight/elements": "^7.3.6",
 		"@types/node": "^16.10.2",
-		"openapi-cli": "^0.0.2",
 		"openapi-types": "^9.3.0",
 		"openapi-typescript": "^4.3.0",
 		"quicktype": "^15.0.260",
 		"quicktype-core": "^6.0.70",
-		"redoc-cli": "^0.12.3",
 		"yaml": "^1.10.2"
-	},
-	"scripts": {
-		"generate": "node ./scripts/generate.mjs",
-		"pack": "npm pack",
-		"preview": "npx openapi preview-docs -p 8888 api/neu.yaml",
-		"test": "cd test && neu run"
-	},
-	"dependencies": {
-		"@stoplight/elements-core": "^7.3.6"
 	}
 }
