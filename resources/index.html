@@ -14,15 +14,20 @@
   </head>
   <body>
 
-    <header>
-      <p>Neutralino server uses basic authorization but does not provide username and password entry.</p>
-      <p>To set a correct API key, type `"Basic "+ NL_TOKEN` in the Webview console and write the result in the `Authorization` field of an endpoint.</p>
-      <p>Like: OS > execCommand > TryIt tab > Auth section</p>
-      <br>
-    </header>
+    <elements-api
+    apiDescriptionUrl="../api/api.json"
+    router="hash"
+    layout="stacked"
+    ></elements-api>
 
     <script src="js/neutralino.js"></script>
-    <script src="./index.js"></script>
+    
+    <script>
+      Neutralino.init ()
+      Neutralino.events.on ("windowClose", () => {
+          Neutralino.app.exit()
+      })
+    </script>
 
   </body>
 </html>

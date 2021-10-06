@@ -13,6 +13,5 @@
 # tmp
 /tools
 /*.ts
-/*.schema.json
 /resources/*.test.ts
 /makefile-tmp

@@ -1,4 +1,5 @@
 {
+    "$schema": "./neutralino.config.schema.json",
     "applicationId": "js.neutralino.sample",
     "defaultMode": "window",
     "port": 65097,

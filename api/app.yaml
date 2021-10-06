@@ -2,15 +2,15 @@ openapi: 3.0.2
 info:
   title: Neutralino.app
   version: 1.5.0
-  description: |-
-    '`Neutralino.app` namespace contains methods related to the current application instance.'
-servers:
-  - url: 'http://localhost'
+  description: '`Neutralino.app` namespace contains methods related to the current application instance.'
+
 x-ref: |
   https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/app.md
   https://github.com/neutralinojs/neutralinojs/blob/main/api/app/app.cpp
   https://github.com/neutralinojs/neutralino.js/blob/main/src/api/app.ts
+  
 paths:
+
   /__nativeMethod_app.exit:
     post:
       operationId: Neutralino.app.exit
@@ -44,6 +44,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AlwaysSuccessResponse'
+
   /__nativeMethod_app.getConfig:
     get:
       operationId: Neutralino.app.getConfig
@@ -64,6 +65,7 @@ paths:
         '200':
           $ref: '#/components/responses/GetConfigResponse'
       x-note: 'maxWidth, maxHeight, binaryVersion and clientVersion not found in default neutralino.config.json'
+
   /__nativeMethod_app.keepAlive:
     get:
       operationId: Neutralino.app.keepAlive
@@ -84,6 +86,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/KeepAliveResponse'
+          
   /__nativeMethod_app.killProcess:
     get:
       operationId: Neutralino.app.killProcess
@@ -105,6 +108,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AlwaysSuccessResponse'
+
 components:
 
   securitySchemes:
@@ -114,6 +118,7 @@ components:
       name: Authorization 
 
   requestBodies:
+    
     ExitRequest:
       content:
         application/json:
@@ -124,7 +129,9 @@ components:
               exitCode:
                 type: integer
                 description: An integer value for the process's exit code. The default value is always `0` (success).
+
   responses:
+
     AlwaysSuccessResponse:
       description: OK
       content:
@@ -138,12 +145,14 @@ components:
                 description: Always true
             required:
               - success
+
     GetConfigResponse:
       description: Application configuration
       content:
         application/json:
           schema:
             $ref: ./models/neutralino.config.schema.yaml
+            
     KeepAliveResponse:
       description: OK
       content:

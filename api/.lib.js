@@ -12,6 +12,14 @@ import Json from '@apidevtools/json-schema-ref-parser'
 //@ts-ignore
 const __dirname = Path.dirname (Url.fileURLToPath (import.meta.url))
 
+if (process.cwd () != __dirname)
+{
+    console.error (
+        'You need to run this script in the `/api` directory.\n' +
+        'This is necessary to resolve JSON references.'
+    )
+    process.exit (1)
+}
 
 /**
     @typedef {import ('openapi-types').OpenAPIV3.Document} OADocument
@@ -40,35 +48,114 @@ const __dirname = Path.dirname (Url.fileURLToPath (import.meta.url))
     @property {import ('../api/window').paths} paths
 */
 
+
 const namespaces = ['app', 'os', 'window']
+
+
+function error (...texts)
+{
+    console.error (...texts)
+    process.exit (1)
+}
+
+
+/**
+    @param {string} filepath 
+    @param {boolean} [flatten]
+        If set to `true`, `$ref` fields are replaced by the content of its reference.
+        This is necessary because some tools do not support external references.
+    @returns {Promise <object>}
+ */
+function readYamlFile (filepath, flatten = true)
+{
+    return flatten
+         ? new Promise ((resolve, reject) => Json.dereference (
+            Yaml.parse (Fs.readFileSync (filepath, 'utf8')),
+            (err, sch) => { if (err) reject (err) ; resolve (sch) }
+        ))
+        : Promise.resolve (Yaml.parse (Fs.readFileSync (filepath, 'utf8')))
+}
+
+
+/**
+ * @param {object} obj 
+ * @param {string} filepath 
+ */
+function writeJsonFile (obj, filepath)
+{
+    console.log ('Write', filepath)
+    Fs.writeFileSync (filepath, JSON.stringify (obj, null, 2))
+}
+
 
 /**
     
  */
-export function writeFlattenApis ()
+export async function writeFlattenApis ()
 {
-    namespaces.forEach (name =>  write (
-        Path.join (__dirname, name + '.yaml'),
-        Path.join (__dirname, name + '.json')
-    ))
-    
-    // TODO
-    // $schema: 'http://json-schema.org/draft-04/schema'
-    // id: 'https://neutralino.js.org/v2-client-specification'
+    /** @type {OADocument} */
+    const api = await readYamlFile (Path.join (__dirname, 'api.yaml'), false)
 
-    write (
-        Path.join (__dirname, 'models', 'neutralino.config.schema.yaml'),
+    for (var ns of namespaces)
+    {
+        writeJsonFile (
+            await readYamlFile (Path.join (__dirname, ns + '.yaml')),
+            Path.join (__dirname, ns + '.json')
+        )
+
+        /** @type {OADocument} */
+        var nsapi = await readYamlFile (Path.join (__dirname, ns + '.yaml'), false)
+
+        var duplicates = []
+        
+        if (nsapi.paths &&
+            getDuplicates (api.paths, nsapi.paths, duplicates)
+        ) error (`Duplicate keys in ${ns}.yaml'#/paths`, duplicates)
+
+        if (nsapi.components.requestBodies &&
+            getDuplicates (api.components.requestBodies, nsapi.components.requestBodies, duplicates)
+        ) error (`Duplicate keys in ${ns}.yaml'#/components/requestBodies`, duplicates)
+
+        if (nsapi.components.responses &&
+            getDuplicates (api.components.responses, nsapi.components.responses, duplicates)
+        ) error (`Duplicate keys in ${ns}.yaml'#/components/responses`, duplicates)
+
+        if (nsapi.components.schemas &&
+            getDuplicates (api.components.schemas, nsapi.components.schemas, duplicates)
+        ) error (`Duplicate keys in ${ns}.yaml'#/components/schemas`, duplicates)
+
+        Object.assign (api.paths, nsapi.paths)
+        Object.assign (api.components.requestBodies, nsapi.components.requestBodies)
+        Object.assign (api.components.responses, nsapi.components.responses)
+        Object.assign (api.components.schemas, nsapi.components.schemas)
+    }
+
+    writeJsonFile (api, Path.join (__dirname, 'api.json'))
+
+    writeJsonFile (
+        Object.assign (
+            {
+                '$schema': 'http://json-schema.org/draft-04/schema',
+                id: 'https://neutralino.js.org/v2'
+            },
+            await readYamlFile (Path.join (__dirname, 'models', 'neutralino.config.schema.yaml'))
+        ),
         Path.join (__dirname, '..', 'neutralino.config.schema.json')
     )
 
-    
-    function write (inputPath, outputPath)
+    /**
+    @param {object} objA 
+    @param {object} objB 
+    @param {string[]} out 
+     */
+    function getDuplicates (objA, objB, out)
     {
-        var sch  = Yaml.parse (Fs.readFileSync (inputPath, { encoding: "utf8" }))
-        Json.dereference (sch, (err, sch) => {
-            console.log ('Write', outputPath)
-            Fs.writeFileSync (outputPath, JSON.stringify (sch, null, 2))
-        })
+        const keysA = Object.getOwnPropertyNames (objA)
+        const keysB = Object.getOwnPropertyNames (objB)
+        for (var k of keysA) {
+            if (keysB.includes (k)) out.push (k)
+        }
+        return out.length > 0
     }
 }
  
@@ -81,19 +168,10 @@ export async function getNeutralinoApi ()
     
     const api = {}
     for (var name of namespaces)
-        api[name] = await read (Path.join (root, 'api', name + '.yaml'))
+        api[name] = await readYamlFile (Path.join (root, 'api', name + '.yaml'))
 
     //@ts-ignore
     return api
-
-
-   function read (filepath)
-   {
-       return new Promise ((resolve, reject) => Json.dereference (
-            Yaml.parse (Fs.readFileSync (filepath, 'utf8')),
-            (err, sch) => { if (err) reject (err) ; resolve (sch) }
-        ))
-   }
 }
 
 

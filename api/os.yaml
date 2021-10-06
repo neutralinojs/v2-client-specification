@@ -5,17 +5,6 @@ info:
   version: 1.5.0
   description: '`Neutralino.os` namespace contains methods related to the user''s operating system.'
 
-servers:
-  - url: 'http://localhost:{NL_PORT}'
-    description: Neutralino server
-    variables:
-      NL_PORT:
-        description: Application port
-        default: '65097'
-
-security:
-  - basicAuth: []
-
 x-ref: |-
   - https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/os.md
   - https://github.com/neutralinojs/neutralinojs/blob/main/api/os/os.cpp
