@@ -24,9 +24,8 @@
   "paths": {
     "/__nativeMethod_app.exit": {
       "post": {
-        "operationId": "Neutralino.app.exit",
         "summary": "exit",
-        "description": "Terminates the running application.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.exit();\n\nawait Neutralino.app.exit(130);\n```\n<!--\ntype: tab\ntitle: Test\n-->\n```json\n```\n<button onClick=\"alert('---')\">Tokyo</button>\n<script>\nvar e = \"\"\n</script>\n<!-- type: tab-end -->",
+        "operationId": "Neutralino.app.exit",
         "tags": [
           "App"
         ],
@@ -37,14 +36,14 @@
           "200": {
             "$ref": "#/components/responses/AlwaysSuccessResponse"
           }
-        }
+        },
+        "description": "Terminates the running application.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.exit();\n\nawait Neutralino.app.exit(130);\n```\n<!--\ntype: tab\ntitle: Test\n-->\n```json\n```\n<button onClick=\"alert('---')\">Tokyo</button>\n<script>\nvar e = \"\"\n</script>\n<!-- type: tab-end -->"
       }
     },
     "/__nativeMethod_app.getConfig": {
       "get": {
-        "operationId": "Neutralino.app.getConfig",
         "summary": "getConfig",
-        "description": "Returns the current application configuration as a JSON object.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.getConfig();\n```\n<!-- type: tab-end -->\n",
+        "operationId": "Neutralino.app.getConfig",
         "tags": [
           "App"
         ],
@@ -53,14 +52,14 @@
             "$ref": "#/components/responses/GetConfigResponse"
           }
         },
+        "description": "Returns the current application configuration as a JSON object.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.getConfig();\n```\n<!-- type: tab-end -->",
         "x-note": "maxWidth, maxHeight, binaryVersion and clientVersion not found in default neutralino.config.json"
       }
     },
     "/__nativeMethod_app.keepAlive": {
       "get": {
-        "operationId": "Neutralino.app.keepAlive",
         "summary": "keepAlive",
-        "description": "The keepAlive method is responsible for saving the Neutralinojs server instance from the automatic termination.\nThis method is called automatically from the client library for the browser mode.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.keepAlive();\n```\n<!-- type: tab-end -->",
+        "operationId": "Neutralino.app.keepAlive",
         "tags": [
           "App"
         ],
@@ -68,14 +67,14 @@
           "200": {
             "$ref": "#/components/responses/KeepAliveResponse"
           }
-        }
+        },
+        "description": "The keepAlive method is responsible for saving the Neutralinojs server instance from the automatic termination.\nThis method is called automatically from the client library for the browser mode.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.keepAlive();\n```\n<!-- type: tab-end -->"
       }
     },
     "/__nativeMethod_app.killProcess": {
       "get": {
-        "operationId": "Neutralino.app.killProcess",
         "summary": "killProcess",
-        "description": "Kills the application process.\nIf the application becomes unresponsive, you can use this to terminate the process instantly.\nHowever, we recommend you to use the `exit()` method to close your application properly.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.killProcess();\n```\n<!-- type: tab-end -->\n",
+        "operationId": "Neutralino.app.killProcess",
         "tags": [
           "App"
         ],
@@ -83,7 +82,41 @@
           "200": {
             "$ref": "#/components/responses/AlwaysSuccessResponse"
           }
-        }
+        },
+        "description": "Kills the application process.\nIf the application becomes unresponsive, you can use this to terminate the process instantly.\nHowever, we recommend you to use the `exit()` method to close your application properly.\n<!--\ntype: tab\ntitle: JS\n-->\n```js\nawait Neutralino.app.killProcess();\n```\n<!-- type: tab-end -->"
+      }
+    },
+    "/__nativeMethod_computer.getMemoryInfo": {
+      "get": {
+        "summary": "computer.getMemoryInfo",
+        "operationId": "Neutralino.computer.getMemoryInfo",
+        "tags": [
+          "Computer"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetMemoryInfoResponse"
+          }
+        },
+        "description": "Provides physical memory details (in megabytes).\n\n```js\nlet ramInfo = await Neutralino.computer.getRamUsage();\nconsole.log(`Your ram size: ${Math.round(ramInfo.total / 1000000)}GB`);\n```"
+      }
+    },
+    "/__nativeMethod_debug.log": {
+      "post": {
+        "summary": "log",
+        "operationId": "Neutralino.debug.log",
+        "tags": [
+          "Debug"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/LogRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/LogResponse"
+          }
+        },
+        "description": "Writes messages to `neutralino.log` file. \n\n:::tip\nIf your application is running via `neu run` or `neu listen`, you can see log\nmessages on your terminal.\n:::\n\n```js\nawait Neutralino.debug.log({\n  type: 'INFO',\n  message: 'Test message'\n});\n```"
       }
     },
     "/__nativeMethod_os.execCommand": {
@@ -228,6 +261,42 @@
           }
         },
         "description": "Opens a URL with the default web browser.\n:::tip If your application is running on the default web browser, this method will open a new tab. :::"
+      }
+    },
+    "/__nativeMethod_storage.setData": {
+      "post": {
+        "summary": "setData",
+        "operationId": "Neutralino.storage.setData",
+        "tags": [
+          "Storage"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SetDataRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SetDataResponse"
+          }
+        },
+        "description": "Writes data into Neutralinojs shared storage. \n\n```js\nawait Neutralino.storage.putData({\n  bucket: 'userDetails',\n  data: JSON.stringify({\n    username: 'TestValue'\n  })\n});\n```"
+      }
+    },
+    "/__nativeMethod_storage.getData": {
+      "post": {
+        "summary": "getData",
+        "operationId": "Neutralino.storage.getData",
+        "tags": [
+          "Storage"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/GetDataRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetDataResponse"
+          }
+        },
+        "description": "Reads and returns data for a given Neutralinojs shared storage key. \n```js\nlet response = await Neutralino.storage.getData({\n  bucket: 'userDetails'\n});\nconsole.log(`Data: ${response.data}`);\n```\n"
       }
     },
     "/__nativeMethod_window.setTitle": {
@@ -501,6 +570,15 @@
           }
         }
       },
+      "LogRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/LogOptions"
+            }
+          }
+        }
+      },
       "ExecCommandRequest": {
         "content": {
           "application/json": {
@@ -569,6 +647,24 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/OpenOptions"
+            }
+          }
+        }
+      },
+      "SetDataRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SetDataOptions"
+            }
+          }
+        }
+      },
+      "GetDataRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GetDataOptions"
             }
           }
         }
@@ -726,6 +822,38 @@
                   "type": "string"
                 }
               }
+            }
+          }
+        }
+      },
+      "GetMemoryInfoResponse": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "string"
+                },
+                "returnValue": {
+                  "$ref": "#/components/schemas/GetMemoryInfoResult"
+                }
+              },
+              "required": [
+                "success",
+                "returnValue"
+              ]
+            }
+          }
+        }
+      },
+      "LogResponse": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/LogResult"
             }
           }
         }
@@ -890,6 +1018,74 @@
           }
         }
       },
+      "SetDataResponse": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                },
+                {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "GetDataResponse": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "returnValue": {
+                      "$ref": "#/components/schemas/GetDataResult"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "returnValue"
+                  ]
+                },
+                {
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
       "SuccessResponse": {
         "description": "OK",
         "content": {
@@ -951,6 +1147,60 @@
       }
     },
     "schemas": {
+      "GetMemoryInfoResult": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total physical memory."
+          },
+          "available": {
+            "type": "number",
+            "description": "Available physical memory."
+          }
+        },
+        "required": [
+          "total",
+          "available"
+        ]
+      },
+      "LogOptions": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "INFO",
+              "WARN",
+              "ERROR"
+            ],
+            "description": "Type of the message. Accepted values are `INFO`, `WARN`, and `ERROR`."
+          },
+          "message": {
+            "type": "string",
+            "description": "Content to be logged."
+          }
+        },
+        "required": [
+          "type",
+          "message"
+        ]
+      },
+      "LogResult": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
       "ExecCommandOptions": {
         "type": "object",
         "properties": {
@@ -1158,6 +1408,37 @@
         "x-examples": {
           "example": {
             "url": "https://neutralino.js.org"
+          }
+        }
+      },
+      "SetDataOptions": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "A key to indentify data."
+          },
+          "data": {
+            "type": "string",
+            "description": "Data as a string. If this value is `null` or `undefined`,\nthe specific data record will be erased from the disk."
+          }
+        }
+      },
+      "GetDataOptions": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "The key of the storage data record."
+          }
+        }
+      },
+      "GetDataResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Data string of the storage record."
           }
         }
       }

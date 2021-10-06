@@ -1,0 +1,149 @@
+openapi: 3.0.2
+info:
+  title: Neutralino.app
+  version: 1.5.0
+  description: |-
+    Neutralinojs has an in-built shared key-value storage. It's like a
+    global [`LocalStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) for all Neutralinojs modes.
+    `Neutralinos.storage` exposes methods for interacting with this storage feature.
+
+    :::tip
+    The storage API persists all data records into `.storage` directory in the
+    root directory of your application. If you want to clear all data records,
+    delete the `.storage` directory.
+    :::
+
+x-ref: |
+  https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/storage.md
+  https://github.com/neutralinojs/neutralinojs/blob/main/api/storage/storage.cpp
+  https://github.com/neutralinojs/neutralino.js/blob/main/src/api/storage.ts
+
+paths:
+
+  /__nativeMethod_storage.setData:
+    post:
+      summary: setData
+      operationId: Neutralino.storage.setData
+      tags: [Storage]
+      requestBody:
+        $ref: '#/components/requestBodies/SetDataRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/SetDataResponse'
+      description: |-
+        Writes data into Neutralinojs shared storage. 
+
+        ```js
+        await Neutralino.storage.putData({
+          bucket: 'userDetails',
+          data: JSON.stringify({
+            username: 'TestValue'
+          })
+        });
+        ```
+
+  /__nativeMethod_storage.getData:
+    post:
+      summary: getData
+      operationId: Neutralino.storage.getData
+      tags: [Storage]
+      requestBody:
+        $ref: '#/components/requestBodies/GetDataRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/GetDataResponse'
+      description: |
+        Reads and returns data for a given Neutralinojs shared storage key. 
+        ```js
+        let response = await Neutralino.storage.getData({
+          bucket: 'userDetails'
+        });
+        console.log(`Data: ${response.data}`);
+        ```
+
+components:
+
+  requestBodies:
+    
+    SetDataRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SetDataOptions'
+
+    GetDataRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetDataOptions'
+            
+
+  responses:
+
+    SetDataResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            oneOf:
+              - properties:
+                  success:
+                    type: boolean
+                required:
+                  - "success"
+              - properties:
+                  error:
+                    type: string
+                required:
+                  - "error"
+
+    GetDataResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            oneOf:
+              - properties:
+                  success:
+                    type: boolean
+                  returnValue:
+                    $ref: '#/components/schemas/GetDataResult'
+                required:
+                  - "success"
+                  - "returnValue"
+              - properties:
+                  error:
+                    type: string
+                required:
+                  - "error"
+
+  schemas:
+
+    SetDataOptions:
+      type: object
+      properties:
+        key:
+          type: string
+          description: A key to indentify data.
+        data:
+          type: string
+          description: |-
+            Data as a string. If this value is `null` or `undefined`,
+            the specific data record will be erased from the disk.
+
+    GetDataOptions:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The key of the storage data record.
+
+    GetDataResult:
+      type: object
+      properties:
+        data:
+          type: string
+          description: Data string of the storage record.
+

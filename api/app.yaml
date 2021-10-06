@@ -13,8 +13,14 @@ paths:
 
   /__nativeMethod_app.exit:
     post:
-      operationId: Neutralino.app.exit
       summary: exit
+      operationId: Neutralino.app.exit
+      tags: [App]
+      requestBody:
+        $ref: '#/components/requestBodies/ExitRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
       description: |-
         Terminates the running application.
         <!--
@@ -37,19 +43,16 @@ paths:
         var e = ""
         </script>
         <!-- type: tab-end -->
-      tags:
-        - App
-      requestBody:
-        $ref: '#/components/requestBodies/ExitRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
 
   /__nativeMethod_app.getConfig:
     get:
-      operationId: Neutralino.app.getConfig
       summary: getConfig
-      description: |
+      operationId: Neutralino.app.getConfig
+      tags: [App]
+      responses:
+        '200':
+          $ref: '#/components/responses/GetConfigResponse'
+      description: |-
         Returns the current application configuration as a JSON object.
         <!--
         type: tab
@@ -59,17 +62,16 @@ paths:
         await Neutralino.app.getConfig();
         ```
         <!-- type: tab-end -->
-      tags:
-        - App
-      responses:
-        '200':
-          $ref: '#/components/responses/GetConfigResponse'
       x-note: 'maxWidth, maxHeight, binaryVersion and clientVersion not found in default neutralino.config.json'
 
   /__nativeMethod_app.keepAlive:
     get:
-      operationId: Neutralino.app.keepAlive
       summary: keepAlive
+      operationId: Neutralino.app.keepAlive
+      tags: [App]
+      responses:
+        '200':
+          $ref: '#/components/responses/KeepAliveResponse'
       description: |-
         The keepAlive method is responsible for saving the Neutralinojs server instance from the automatic termination.
         This method is called automatically from the client library for the browser mode.
@@ -81,17 +83,16 @@ paths:
         await Neutralino.app.keepAlive();
         ```
         <!-- type: tab-end -->
-      tags:
-        - App
-      responses:
-        '200':
-          $ref: '#/components/responses/KeepAliveResponse'
           
   /__nativeMethod_app.killProcess:
     get:
-      operationId: Neutralino.app.killProcess
       summary: killProcess
-      description: |
+      operationId: Neutralino.app.killProcess
+      tags: [App]
+      responses:
+        '200':
+          $ref: '#/components/responses/AlwaysSuccessResponse'
+      description: |-
         Kills the application process.
         If the application becomes unresponsive, you can use this to terminate the process instantly.
         However, we recommend you to use the `exit()` method to close your application properly.
@@ -103,19 +104,8 @@ paths:
         await Neutralino.app.killProcess();
         ```
         <!-- type: tab-end -->
-      tags:
-        - App
-      responses:
-        '200':
-          $ref: '#/components/responses/AlwaysSuccessResponse'
 
 components:
-
-  securitySchemes:
-    basicAuth:
-      type: apiKey
-      in: header
-      name: Authorization 
 
   requestBodies:
     

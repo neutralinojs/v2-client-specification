@@ -213,12 +213,6 @@ paths:
 
 components:
   
-  securitySchemes:
-    basicAuth:
-      name: Authorization
-      type: apiKey
-      in: header
-  
   requestBodies:
     SetTitleRequest:
       content:

@@ -49,7 +49,7 @@ if (process.cwd () != __dirname)
 */
 
 
-const namespaces = ['app', 'os', 'window']
+const namespaces = ['app', 'computer', 'debug', 'os', 'storage', 'window']
 
 
 function error (...texts)

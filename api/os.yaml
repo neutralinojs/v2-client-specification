@@ -172,17 +172,6 @@ paths:
 
 components:
 
-  securitySchemes:
-    basicAuth:
-      type: apiKey
-      in: header
-      name: Authorization 
-      description: |-
-        Neutralino server uses basic authorization but does not provide username and password entry.
-        So this definition of security is a "<i>substitute</i>".
-
-        To set a correct API key, type `"Basic "+ NL_TOKEN` in the Webview console and write the result in the `Authorization` field of an endpoint.
-
   requestBodies:
 
     ExecCommandRequest:
