@@ -1,10 +1,5 @@
 
 
-Neutralino.init ()
-Neutralino.events.on ("windowClose", () => {
-    Neutralino.app.exit()
-})
-
 window.localStorage.TryIt_securitySchemeValues = JSON.stringify ({ "basicAuth":'Basic ' + NL_TOKEN })
 
 

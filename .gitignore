@@ -7,7 +7,8 @@
 /test/icons
 /test/js
 
-/docs
+/docs/styles
+/docs/*.html
 /src/*.md
 
 /*.log

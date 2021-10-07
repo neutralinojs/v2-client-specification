@@ -230,9 +230,7 @@ export interface paths {
      * Executes a command and returns the output.
      *
      * ```js
-     * Neutralino.os.execCommand ({
-     *   command: 'python --version'
-     * })
+     * Neutralino.os.execCommand ('python --version')
      * ```
      */
     post: operations["Neutralino.os.execCommand"];
@@ -875,9 +873,7 @@ export interface operations {
    * Executes a command and returns the output.
    *
    * ```js
-   * Neutralino.os.execCommand ({
-   *   command: 'python --version'
-   * })
+   * Neutralino.os.execCommand ('python --version')
    * ```
    */
   "Neutralino.os.execCommand": {

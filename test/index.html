@@ -23,6 +23,12 @@
     ></elements-api>
 
     <script src="js/neutralino.js"></script>
+    <script>
+      Neutralino.init ()
+      Neutralino.events.on ("windowClose", () => {
+          Neutralino.app.exit()
+      })
+    </script>
     <script src="./index.js"></script>
 
   </body>
