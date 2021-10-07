@@ -1,18 +1,26 @@
 
 //@ts-check
 
-import { execSync } from 'node:child_process'
-import { __dirname, writeFile } from './api-tools.js'
-import { writeFlattenApis } from './api-json.js'
 
-const writeDts = () => writeFlattenApis ()
+import { execSync } from 'node:child_process'
+import { ROOT_DIR, OUT_JSON, OUT_DTS, writeFile } from './lib.js'
+import { writeFlattenApis } from './json.js'
+
+
+/**
+ * @param {string} outdir 
+ */
+export const writeDts = (outdir) => writeFlattenApis (outdir)
 .then (() =>
 {
+    console.log ()
+    console.log ('## Typescript definition files')
+    
     // openapi-typescript cannot be imported as an ES module `import ots from 'openapi-typescript'`
     // So A sub-process is used.
-    return execSync ('npx openapi-typescript api.json', { encoding: 'utf8' })
+    return execSync ('npx openapi-typescript ' + OUT_JSON, { encoding: 'utf8', cwd: ROOT_DIR })
 })
-.then (out => writeFile ('../neutralino.api.d.ts', `
+.then (out => writeFile (OUT_DTS, `
 // Types utilities
 
 type Paths
@@ -49,9 +57,3 @@ ${out}
     console.error (err) 
     process.exit (1)
 })
-
-
-if (process.argv.includes ('--build-dts'))
-{
-    writeDts ()
-}

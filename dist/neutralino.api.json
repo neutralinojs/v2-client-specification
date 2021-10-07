@@ -272,9 +272,7 @@
                     "globalVariables",
                     "modes",
                     "cli"
-                  ],
-                  "title": "",
-                  "description": "Contains the application configuration details. "
+                  ]
                 }
               }
             }

@@ -86,8 +86,8 @@ export interface paths {
      * Provides physical memory details (in megabytes).
      *
      * ```js
-     * let ramInfo = await Neutralino.computer.getRamUsage();
-     * console.log(`Your ram size: ${Math.round(ramInfo.total / 1000000)}GB`);
+     * Neutralino.computer.getMemoryInfo()
+     *   .then (ramInfo => `Your ram size: ${Math.round(ramInfo.total / 1000000)}GB`)
      * ```
      */
     get: operations["Neutralino.computer.getMemoryInfo"];
@@ -102,7 +102,7 @@ export interface paths {
      * :::
      *
      * ```js
-     * await Neutralino.debug.log({
+     * Neutralino.debug.log({
      *   type: 'INFO',
      *   message: 'Test message'
      * });
@@ -115,7 +115,7 @@ export interface paths {
      * Creates a new directory.
      *
      * ```js
-     * await Neutralino.filesystem.createDirectory({
+     * Neutralino.filesystem.createDirectory ({
      *   path: './newDirectory',
      * });
      * ```
@@ -643,8 +643,8 @@ export interface operations {
    * Provides physical memory details (in megabytes).
    *
    * ```js
-   * let ramInfo = await Neutralino.computer.getRamUsage();
-   * console.log(`Your ram size: ${Math.round(ramInfo.total / 1000000)}GB`);
+   * Neutralino.computer.getMemoryInfo()
+   *   .then (ramInfo => `Your ram size: ${Math.round(ramInfo.total / 1000000)}GB`)
    * ```
    */
   "Neutralino.computer.getMemoryInfo": {
@@ -674,7 +674,7 @@ export interface operations {
    * :::
    *
    * ```js
-   * await Neutralino.debug.log({
+   * Neutralino.debug.log({
    *   type: 'INFO',
    *   message: 'Test message'
    * });
@@ -707,7 +707,7 @@ export interface operations {
    * Creates a new directory.
    *
    * ```js
-   * await Neutralino.filesystem.createDirectory({
+   * Neutralino.filesystem.createDirectory ({
    *   path: './newDirectory',
    * });
    * ```
