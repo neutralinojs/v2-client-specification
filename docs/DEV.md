@@ -1,2 +1,2 @@
 
-MOVED TO https://github.com/corbane/neutralino.js/blob/main/docs/DEV.md
+MOVED TO https://github.com/corbane/neutralino-monorepo/blob/main/docs/DEV.md

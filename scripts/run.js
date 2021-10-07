@@ -2,15 +2,16 @@
 //@ts-check
 
 
+import Path from 'path'
 import chokidar from 'chokidar'
 import { writeFlattenApis } from './json.js'
 import { writeDts } from './dts.js'
-import { OUT_DIR, getCmdArgument } from './lib.js'
+import { OUT_DIR, API_DIR, getCmdArgument } from './lib.js'
 
 
 if (process.argv.includes ('--watch-json'))
 {
-    const watcher = chokidar.watch ('./*.yaml', { ignored: './api.yaml', persistent: true })
+    const watcher = chokidar.watch (Path.join (API_DIR, '*.yaml'), { ignored: './api.yaml', persistent: true })
     watcher.on ('change', () =>
     {
         writeFlattenApis (OUT_DIR)
