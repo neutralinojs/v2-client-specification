@@ -10,14 +10,19 @@
       body {
         padding: 10px;
       }
+      .neu-test-button {
+        all: revert;
+      }
     </style>
   </head>
   <body>
 
+    <!-- https://github.com/stoplightio/elements/blob/main/docs/getting-started/usage/web-component.md -->
     <elements-api
-    apiDescriptionUrl="../api/api.json"
+    apiDescriptionUrl="../../src/api.json"
     router="hash"
-    layout="stacked"
+    
+    layout="sidebar"
     ></elements-api>
 
     <script src="js/neutralino.js"></script>
@@ -27,7 +32,9 @@
       Neutralino.events.on ("windowClose", () => {
           Neutralino.app.exit()
       })
+      window.localStorage.TryIt_securitySchemeValues = JSON.stringify ({ "basicAuth":'Basic ' + NL_TOKEN })
     </script>
+    <script src="./index.js"></script>
 
   </body>
 </html>

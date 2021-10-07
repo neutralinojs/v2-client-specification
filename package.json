@@ -8,9 +8,8 @@
 	],
 	"devDependencies": {
 		"@apidevtools/json-schema-ref-parser": "^9.0.9",
-		"@stoplight/elements-core": "^7.3.6",
-		"@stoplight/elements": "^7.3.6",
 		"@types/node": "^16.10.2",
+		"chokidar": "^3.5.2",
 		"openapi-types": "^9.3.0",
 		"openapi-typescript": "^4.3.0",
 		"quicktype": "^15.0.260",

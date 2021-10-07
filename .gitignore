@@ -3,15 +3,12 @@
 /.vscode
 /node_modules
 /out
-/*.log
-
-# make test-app
 /bin
-/resources/icons
-/resources/js
+/test/icons
+/test/js
 
-# tmp
-/tools
-/*.ts
-/resources/*.test.ts
-/makefile-tmp
+/docs
+/src/*.md
+
+/*.log
+/**/*.no

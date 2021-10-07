@@ -1,17 +1,13 @@
 openapi: 3.0.2
-
 info:
   title: Neutralino.os
   version: 1.5.0
   description: '`Neutralino.os` namespace contains methods related to the user''s operating system.'
-
-x-ref: |-
-  - https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/os.md
-  - https://github.com/neutralinojs/neutralinojs/blob/main/api/os/os.cpp
-  - https://github.com/neutralinojs/neutralino.js/blob/main/src/api/os.ts
-
+x-ref:
+  - 'https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/os.md'
+  - 'https://github.com/neutralinojs/neutralinojs/blob/main/api/os/os.cpp'
+  - 'https://github.com/neutralinojs/neutralino.js/blob/main/src/api/os.ts'
 paths:
-  
   /__nativeMethod_os.execCommand:
     post:
       operationId: Neutralino.os.execCommand
@@ -27,12 +23,8 @@ paths:
         Executes a command and returns the output.
 
         ```js
-        let response = await Neutralino.os.execCommand({
-          command: 'python --version'
-        });
-        console.log(`Your Python version: ${response.output}`);
+        Neutralino.os.execCommand ('python --version')
         ```
-  
   /__nativeMethod_os.getEnvar:
     post:
       summary: getEnvar
@@ -48,12 +40,9 @@ paths:
         Provides the value of a given environment variable.
 
         ```js
-        let response = await Neutralino.os.getEnvar({
-          key: 'USER'
-        });
-        console.log(`USER = ${response.value}`);
+        Neutralino.os.getEnvar('USER')
+          .then (response => `USER = ${response.value}`);
         ```
-  
   /__nativeMethod_os.showOpenDialog:
     post:
       summary: showOpenDialog
@@ -75,7 +64,6 @@ paths:
         });
         console.log(`You've selected: ${response.selectedEntry}`);
         ```
-  
   /__nativeMethod_os.showSaveDialog:
     post:
       summary: showSaveDialog
@@ -96,7 +84,6 @@ paths:
         });
         console.log(`You've selected: ${response.selectedEntry}`);
         ```
-  
   /__nativeMethod_os.showNotification:
     post:
       summary: showNotification
@@ -116,7 +103,6 @@ paths:
           body: 'It works!. Have a nice day'
         });
         ```
-  
   /__nativeMethod_os.showMessageBox:
     post:
       summary: showMessageBox
@@ -129,7 +115,6 @@ paths:
         '200':
           $ref: '#/components/responses/ShowMessageBoxResponse'
       description: Displays a message box.
-  
   /__nativeMethod_os.setTray:
     post:
       summary: setTray
@@ -154,7 +139,6 @@ paths:
         };
         await Neutralino.os.setTray(tray);
         ```
-  
   /__nativeMethod_os.open:
     post:
       operationId: open
@@ -169,61 +153,49 @@ paths:
       description: |-
         Opens a URL with the default web browser.
         :::tip If your application is running on the default web browser, this method will open a new tab. :::
-
 components:
-
   requestBodies:
-
     ExecCommandRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ExecCommandOptions'
-
     GetEnvarRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GetEnvarOptions'
-
     DialogOpenRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/DialogOpenOptions'
-
     ShowSaveDialogRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ShowSaveDialogOptions'
-
     ShowNotificationRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ShowNotificationOptions'
-
     ShowMessageBoxRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ShowMessageBoxOptions'
-
     SetTrayRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/SetTrayOptions'
-
     OpenRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OpenOptions'
-
   responses:
-
     ExecCommandResponse:
       description: OK
       content:
@@ -238,7 +210,6 @@ components:
             required:
               - success
               - output
-
     GetEnvarResponse:
       description: OK
       content:
@@ -253,7 +224,6 @@ components:
             required:
               - success
               - returnValue
-
     DialogOpenResponse:
       description: OK
       content:
@@ -268,7 +238,6 @@ components:
             required:
               - success
               - returnValue
-
     ShowSaveDialogResponse:
       description: OK
       content:
@@ -283,7 +252,6 @@ components:
             required:
               - success
               - returnValue
-
     ShowNotificationResponse:
       description: OK
       content:
@@ -295,7 +263,6 @@ components:
                 type: boolean
             required:
               - success
-
     ShowMessageBoxResponse:
       description: OK
       content:
@@ -307,7 +274,6 @@ components:
                 type: boolean
             required:
               - success
-
     SetTrayResponse:
       description: OK
       content:
@@ -319,7 +285,6 @@ components:
                 type: boolean
             required:
               - success
-              
     OpenResponse:
       description: OK
       content:
@@ -331,9 +296,7 @@ components:
                 type: boolean
             required:
               - success
-
   schemas:
-
     ExecCommandOptions:
       type: object
       properties:
@@ -346,7 +309,6 @@ components:
         - command
       example:
         command: python --version
-
     ExecCommandResult:
       type: string
       description: String data taken from the both standard output (STDOUT) and standard error (STDERR) streams of the command's process.
@@ -360,11 +322,9 @@ components:
         - key
       example:
         key: USER
-
     GetEnvarResult:
       type: string
       description: Value of the given environment variable.
-
     DialogOpenOptions:
       type: object
       properties:
@@ -384,11 +344,9 @@ components:
       example:
         title: Select a folder
         isDirectoryMode: true
-
     DialogOpenResult:
       type: string
       description: The selected value (a folder or directory).
-
     ShowSaveDialogOptions:
       type: object
       properties:
@@ -399,11 +357,9 @@ components:
         - title
       example:
         title: Save to a file
-
     ShowSaveDialogResult:
       type: string
       description: The selected value (a folder or directory).
-
     ShowNotificationOptions:
       type: object
       properties:
@@ -419,7 +375,6 @@ components:
       example:
         type: Hello world
         content: It works!. Have a nice day
-
     ShowMessageBoxOptions:
       type: object
       properties:
@@ -439,7 +394,6 @@ components:
             - QUESTION
           description: 'Message box type. Accepted values are `WARN`, `ERROR`, `INFO`, and `QUESTION`.'
           example: INFO
-
     SetTrayOptions:
       type: object
       properties:
@@ -451,14 +405,13 @@ components:
             $ref: '#/components/schemas/SetTrayItemOptions'
       x-examples:
         example:
-          icon: /resources/icons/trayIcon.png
+          icon: /test/icons/appIcon.png
           menuItems:
             - id: about
               text: About
             - text: '-'
             - id: quit
               text: Quit
-
     SetTrayItemOptions:
       type: object
       properties:
@@ -476,7 +429,6 @@ components:
           description: A boolean flag to mark a specific menu item as selected.
       required:
         - text
-
     OpenOptions:
       type: object
       properties:

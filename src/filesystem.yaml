@@ -1,0 +1,259 @@
+openapi: 3.0.2
+info:
+  title: Neutralino.filesystem
+  version: 1.5.0
+  description: '`Neutralino.filesystem` namespace contains methods for handling files.'
+x-ref: |
+  https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/filesystem.md
+  https://github.com/neutralinojs/neutralinojs/blob/main/api/filesystem/filesystem.cpp
+  https://github.com/neutralinojs/neutralino.js/blob/main/src/api/filesystem.ts
+paths:
+  /__nativeMethod_filesystem.createDirectory:
+    post:
+      summary: createDirectory
+      operationId: Neutralino.filesystem.createDirectory
+      tags:
+        - Filesystem
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDirectoryRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateDirectoryResponse'
+      description: |-
+        Creates a new directory.
+
+        ```js
+        await Neutralino.filesystem.createDirectory({
+          path: './newDirectory',
+        });
+        ```
+  /__nativeMethod_filesystem.removeDirectory:
+    post:
+      summary: removeDirectory
+      operationId: Neutralino.filesystem.removeDirectory
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Removes given directories.
+
+        ```js
+        await Neutralino.filesystem.removeDirectory({
+          path: './tmpDirectory',
+        });
+        ```
+  /__nativeMethod_filesystem.writeFile:
+    post:
+      summary: writeFile
+      operationId: Neutralino.filesystem.writeFile
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Writes new text files with data.
+
+        ```js
+        await Neutralino.filesystem.writeFile({
+          fileName: './myFile.txt',
+          data: 'Sample content'
+        });
+        ```
+  /__nativeMethod_filesystem.writeBinaryFile:
+    post:
+      summary: writeBinaryFile
+      operationId: Neutralino.filesystem.writeBinaryFile
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Writes new binary files with data.
+
+        ```js
+        let rawBin = new ArrayBuffer(1);
+        let view = new Uint8Array(rawBin);
+        view[0] = 64; // Saves ASCII '@' to the binary file
+        await Neutralino.filesystem.writeBinaryFile({
+          fileName: './myFile.bin',
+          data: rawBin
+        });
+        ```
+  /__nativeMethod_filesystem.readFile:
+    post:
+      summary: readFile
+      operationId: Neutralino.filesystem.readFile
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Reads text files.
+
+        ```js
+        let response = await Neutralino.filesystem.readFile({
+          fileName: './myFile.txt'
+        });
+        console.log(`Content: ${response.data}`);
+        ```
+  /__nativeMethod_filesystem.readBinaryFile:
+    post:
+      summary: readBinaryFile
+      operationId: Neutralino.filesystem.readBinaryFile
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Reads binary files.
+
+        ```js
+        let response = await Neutralino.filesystem.readBinaryFile({
+          fileName: './myFile.bin'
+        });
+        let view = new Uint8Array(response.data);
+        console.log('Binary content: ', view);
+        ```
+  /__nativeMethod_filesystem.removeFile:
+    post:
+      summary: removeFile
+      operationId: Neutralino.filesystem.removeFile
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Removes given file.
+
+        ```js
+        await Neutralino.filesystem.removeFile({
+          fileName: './myFile.txt'
+        });
+        ```
+  /__nativeMethod_filesystem.readDirectory:
+    post:
+      summary: readDirectory
+      operationId: Neutralino.filesystem.readDirectory
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Reads a whole directory.
+
+        ```js
+        let response = await Neutralino.filesystem.readDirectory({
+          path: NL_PATH
+        });
+        console.log('Content: ', response.entries);
+        ```
+  /__nativeMethod_filesystem.copyFile:
+    post:
+      summary: copyFile
+      operationId: Neutralino.filesystem.copyFile
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Copies a file to a new destination.
+
+        ```js
+        await Neutralino.filesystem.copyFile({
+          source: './source.txt',
+          destination: './destination.txt'
+        });
+        ```
+  /__nativeMethod_filesystem.moveFile:
+    post:
+      summary: moveFile
+      operationId: Neutralino.filesystem.moveFile
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Moves a file to a new destination.
+
+        ```js
+        await Neutralino.filesystem.moveFile({
+          source: './source.txt',
+          destination: './destination.txt'
+        });
+        ```
+  /__nativeMethod_filesystem.getStats:
+    post:
+      summary: getStats
+      operationId: Neutralino.filesystem.getStats
+      tags:
+        - Filesystem
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Returns file statistics for the given path. If the given path doesn't exist or is unable to access, 
+        the awaited method will throw an error. Therefore, you can use this method to check the existance of a file or directory.
+
+        ```js
+        let response = await Neutralino.filesystem.getStats({
+          path: './sampleVideo.mp4'
+        });
+        console.log('Stats:', response);
+        ```
+components:
+  requestBodies:
+    CreateDirectoryRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDirectoryOptions'
+  responses:
+    CreateDirectoryResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            oneOf:
+              - properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                title: success
+                required:
+                  - success
+                  - message
+              - properties:
+                  error:
+                    type: string
+                title: error
+                required:
+                  - error
+          examples:
+            example-success:
+              value:
+                success: true
+                message: Directory ./newDirectory was created
+            example-error:
+              value:
+                error: Cannot create a directory in ./newDirectory
+  schemas:
+    CreateDirectoryOptions:
+      type: object
+      properties:
+        path:
+          type: string
+          description: New directory path.
+      title: ''
+      description: ''

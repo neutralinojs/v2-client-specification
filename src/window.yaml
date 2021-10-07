@@ -5,19 +5,21 @@ info:
   description: |-
     `Neutralino.window` namespace contains methods related to the current native window instance.
     This namespace's methods will work only for the [window](https://neutralino.js.org/docs/configuration/modes#window) mode.
-
 x-ref: |
   https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/window.md
   https://github.com/neutralinojs/neutralinojs/blob/main/api/window/window.cpp
   https://github.com/neutralinojs/neutralino.js/blob/main/src/api/window.ts
-
 paths:
-
   /__nativeMethod_window.setTitle:
     post:
       summary: setTitle
       operationId: Neutrlino.window.setTitle
-      description: Sets the title of the native window.
+      description: |-
+        Sets the title of the native window.
+
+        ```js
+        Neutralino.window.setTitle ('My window')
+        ```
       tags:
         - Window
       requestBody:
@@ -29,7 +31,6 @@ paths:
         - lang: JavaScript
           label: JS
           source: Neutralino.window.setTitle('New title')
-  
   /__nativeMethod_window.setSize:
     post:
       summary: setSize
@@ -41,14 +42,16 @@ paths:
         This method always expects width and height couples. \
         For example, if you are sending `minWidth`, you should send `minHeight` too.
         ```js
-        await Neutralino.window.setSize({
+        Neutralino.window.setSize({
             width: 500,
             height: 200,
             maxWidth: 600,
             maxHeight: 400
         });
+        ```
 
-        await Neutralino.window.setSize({
+        ```js
+        Neutralino.window.setSize({
             resizable: false
         });
         ```
@@ -59,7 +62,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.setIcon:
     post:
       summary: setIcon
@@ -73,7 +75,6 @@ paths:
         '200':
           $ref: '#/components/responses/SuccessResponse'
       x-doc: const icon = '/resources/icons/appIcon.png'; await Neutralino.window.setIcon(icon);
-  
   /__nativeMethod_window.focus:
     get:
       summary: focus
@@ -84,7 +85,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.hide:
     get:
       summary: hide
@@ -93,9 +93,8 @@ paths:
       tags:
         - Window
       responses:
-        200:
+        '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.isVisible:
     get:
       summary: isVisible
@@ -106,7 +105,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/IsVisibleResponse'
-  
   /__nativeMethod_window.show:
     get:
       summary: show
@@ -117,7 +115,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.minimize:
     get:
       summary: minimize
@@ -128,7 +125,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.maximize:
     get:
       summary: maximize
@@ -139,7 +135,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.isMaximized:
     get:
       summary: isMaximized
@@ -150,7 +145,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/IsMaximizedResponse'
-  
   /__nativeMethod_window.unmaximize:
     get:
       summary: unmaximize
@@ -161,7 +155,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.setFullScreen:
     get:
       summary: setFullScreen
@@ -172,7 +165,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.isFullScreen:
     get:
       summary: isFullScreen
@@ -183,7 +175,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/IsFullScreenResponse'
-  
   /__nativeMethod_window.exitFullScreen:
     get:
       summary: exitFullScreen
@@ -194,7 +185,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-  
   /__nativeMethod_window.move:
     post:
       summary: move
@@ -210,9 +200,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
-
 components:
-  
   requestBodies:
     SetTitleRequest:
       content:
@@ -284,7 +272,6 @@ components:
             required:
               - x
               - 'y'
-  
   responses:
     SuccessResponse:
       description: OK

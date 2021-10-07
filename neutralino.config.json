@@ -1,30 +1,30 @@
 {
-    "$schema": "./neutralino.config.schema.json",
-    "applicationId": "js.neutralino.sample",
-    "defaultMode": "window",
-    "port": 65097,
-    "url": "/resources/",
+    "$schema"         : "./neutralino.config.schema.json",
+    "applicationId"   : "js.neutralino.sample",
+    "defaultMode"     : "window",
+    "port"            : 65097,
+    "url"             : "/test/",
     "enableHTTPServer": true,
-    "enableNativeAPI": true,
-    "nativeBlockList": [],
-    "globalVariables": {
+    "enableNativeAPI" : true,
+    "nativeBlockList" : [],
+    "globalVariables" : {
         "API_DEFS": "Test Value"
     },
     "modes": {
         "window": {
-            "title": "Neutralinojs app",
-            "width": 800,
-            "height": 500,
-            "minWidth": 400,
-            "minHeight": 200,
-            "fullScreen": false,
-            "alwaysOnTop": false,
-            "icon": "/resources/icons/appIcon.png",
-            "enableInspector": true,
-            "borderless": false,
-            "maximize": false,
-            "hidden": false,
-            "resizable": true,
+            "title"             : "Neutralinojs app",
+            "width"             : 800,
+            "height"            : 500,
+            "minWidth"          : 400,
+            "minHeight"         : 200,
+            "fullScreen"        : false,
+            "alwaysOnTop"       : false,
+            "icon"              : "/test/icons/appIcon.png",
+            "enableInspector"   : true,
+            "borderless"        : false,
+            "maximize"          : false,
+            "hidden"            : false,
+            "resizable"         : true,
             "exitProcessOnClose": false
         },
         "browser": {},
@@ -32,7 +32,7 @@
     },
     "cli": {
         "binaryName": "neutralino",
-        "resourcesPath": "/resources/",
-        "clientLibrary": "/resources/js/neutralino.js"
+        "resourcesPath": "/test/",
+        "clientLibrary": "/test/js/neutralino.js"
     }
 }
