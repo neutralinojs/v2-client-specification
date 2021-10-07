@@ -12,8 +12,6 @@
 		"chokidar": "^3.5.2",
 		"openapi-types": "^9.3.0",
 		"openapi-typescript": "^4.3.0",
-		"quicktype": "^15.0.260",
-		"quicktype-core": "^6.0.70",
 		"yaml": "^1.10.2"
 	}
 }

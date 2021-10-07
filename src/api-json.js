@@ -1,11 +1,8 @@
 
 //@ts-check
 
-import Fs   from 'fs'
 import Path from 'path'
 import Url  from 'url'
-import Yaml from 'yaml'
-import Json from '@apidevtools/json-schema-ref-parser'
 import chokidar from 'chokidar'
 import { namespaces, readYamlFile, writeJsonFile, exit } from './api-tools.js'
 

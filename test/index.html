@@ -10,9 +10,6 @@
       body {
         padding: 10px;
       }
-      .neu-test-button {
-        all: revert;
-      }
     </style>
   </head>
   <body>
@@ -26,14 +23,6 @@
     ></elements-api>
 
     <script src="js/neutralino.js"></script>
-    
-    <script>
-      Neutralino.init ()
-      Neutralino.events.on ("windowClose", () => {
-          Neutralino.app.exit()
-      })
-      window.localStorage.TryIt_securitySchemeValues = JSON.stringify ({ "basicAuth":'Basic ' + NL_TOKEN })
-    </script>
     <script src="./index.js"></script>
 
   </body>

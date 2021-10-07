@@ -51,19 +51,12 @@ if (process.cwd () != __dirname)
 
 export const namespaces = ['app', 'computer', 'debug', 'filesystem', 'os', 'storage', 'window']
 
-function main ()
-{
-    if (process.argv.includes ('--schemas'))
-        writeFlattenApis ()
-}
 
 export function exit (...texts)
 {
     console.error (...texts)
     process.exit (1)
 }
-
-main ()
 
 
 /**
