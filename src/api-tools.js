@@ -1,7 +1,5 @@
 
-/*/
-    Utilities for working with API definition files.
-/*/
+//@ts-check
 
 import Fs   from 'fs'
 import Path from 'path'
@@ -10,43 +8,19 @@ import Yaml from 'yaml'
 import Json from '@apidevtools/json-schema-ref-parser'
 
 //@ts-ignore
-const __dirname = Path.dirname (Url.fileURLToPath (import.meta.url))
-
-if (process.cwd () != __dirname)
-{
-    console.error (
-        'You need to run this script in the `/api` directory.\n' +
-        'This is necessary to resolve JSON references.'
-    )
-    process.exit (1)
-}
+export const __dirname = Path.dirname (Url.fileURLToPath (import.meta.url))
 
 /**
     @typedef {import ('openapi-types').OpenAPIV3.Document} OADocument
-
-    @typedef {import ('openapi-types').OpenAPIV3.HeaderObject}   OAHeaderObject
-    @typedef {import ('openapi-types').OpenAPIV3.SchemaObject}   OASchemaObject
-    @typedef {import ('openapi-types').OpenAPIV3.LinkObject}     OALinkObject
-    @typedef {import ('openapi-types').OpenAPIV3.EncodingObject} OAEncodingObject
-    @typedef {import ('openapi-types').OpenAPIV3.ExampleObject}  OAExampleObject
-
-    @typedef {object} Neutralino
-    @property {OADocument & NeutralinoApp} app
-    @property {OADocument & NeutralinoOs} os
-    @property {OADocument & NeutralinoWindow} window
-
-    @typedef {object} NeutralinoApp
-    @property {import ('../api/app').components} components
-    @property {import ('../api/app').paths} paths
-
-    @typedef {object} NeutralinoOs
-    @property {import ('../api/os').components} components
-    @property {import ('../api/os').paths} paths
-
-    @typedef {object} NeutralinoWindow
-    @property {import ('../api/window').components} components
-    @property {import ('../api/window').paths} paths
 */
+
+if (process.cwd () != __dirname)
+{
+    exit (
+        'You need to run this script in the `/api` directory.\n' +
+        'This is necessary to resolve JSON references.'
+    )
+}
 
 
 export const namespaces = ['app', 'computer', 'debug', 'filesystem', 'os', 'storage', 'window']
@@ -57,7 +31,6 @@ export function exit (...texts)
     console.error (...texts)
     process.exit (1)
 }
-
 
 /**
     @param {string} filepath 
@@ -84,5 +57,15 @@ export function readYamlFile (filepath, flatten = true)
 export function writeJsonFile (obj, filepath)
 {
     console.log ('Write', filepath)
-    Fs.writeFileSync (filepath, JSON.stringify (obj, null, 2))
+    Fs.writeFileSync (filepath, JSON.stringify (obj, null, 2), { encoding: 'utf8' })
+}
+
+/**
+ * @param {string} filepath 
+ * @param {string} content
+ */
+export function writeFile (filepath, content)
+{
+    console.log ('Write', filepath)
+    Fs.writeFileSync (filepath, content, { encoding: 'utf8' })
 }

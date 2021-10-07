@@ -25,10 +25,10 @@ paths:
         ```js
         Neutralino.os.execCommand ('python --version')
         ```
-  /__nativeMethod_os.getEnvar:
+  /__nativeMethod_os.getEnv:
     post:
-      summary: getEnvar
-      operationId: Neutralino.os.getEnvar
+      summary: getEnv
+      operationId: Neutralino.os.getEnv
       tags:
         - OS
       requestBody:
@@ -40,9 +40,10 @@ paths:
         Provides the value of a given environment variable.
 
         ```js
-        Neutralino.os.getEnvar('USER')
+        Neutralino.os.getEnv('USER')
           .then (response => `USER = ${response.value}`);
         ```
+    parameters: []
   /__nativeMethod_os.showOpenDialog:
     post:
       summary: showOpenDialog

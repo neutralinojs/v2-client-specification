@@ -243,7 +243,7 @@ components:
                 type: number
                 description: Maximum height of the window in pixels.
               resizable:
-                type: number
+                type: boolean
                 description: A boolean value to make the window resizable or fixed.
     SetIconRequest:
       content:

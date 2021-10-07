@@ -12,8 +12,6 @@ paths:
     post:
       summary: createDirectory
       operationId: Neutralino.filesystem.createDirectory
-      tags:
-        - Filesystem
       requestBody:
         $ref: '#/components/requestBodies/CreateDirectoryRequest'
       responses:
@@ -23,10 +21,12 @@ paths:
         Creates a new directory.
 
         ```js
-        await Neutralino.filesystem.createDirectory({
+        Neutralino.filesystem.createDirectory ({
           path: './newDirectory',
         });
         ```
+      tags:
+        - Filesystem
   /__nativeMethod_filesystem.removeDirectory:
     post:
       summary: removeDirectory
@@ -44,6 +44,11 @@ paths:
           path: './tmpDirectory',
         });
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveDirectoryOptions'
   /__nativeMethod_filesystem.writeFile:
     post:
       summary: writeFile
@@ -62,6 +67,11 @@ paths:
           data: 'Sample content'
         });
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WriteFileOptions'
   /__nativeMethod_filesystem.writeBinaryFile:
     post:
       summary: writeBinaryFile
@@ -83,6 +93,11 @@ paths:
           data: rawBin
         });
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WriteBinaryFileOptions'
   /__nativeMethod_filesystem.readFile:
     post:
       summary: readFile
@@ -101,6 +116,11 @@ paths:
         });
         console.log(`Content: ${response.data}`);
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadFileOptions'
   /__nativeMethod_filesystem.readBinaryFile:
     post:
       summary: readBinaryFile
@@ -120,6 +140,11 @@ paths:
         let view = new Uint8Array(response.data);
         console.log('Binary content: ', view);
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadBinaryFileOptions'
   /__nativeMethod_filesystem.removeFile:
     post:
       summary: removeFile
@@ -137,6 +162,11 @@ paths:
           fileName: './myFile.txt'
         });
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveFileOptions'
   /__nativeMethod_filesystem.readDirectory:
     post:
       summary: readDirectory
@@ -155,6 +185,11 @@ paths:
         });
         console.log('Content: ', response.entries);
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadDirectoryOptions'
   /__nativeMethod_filesystem.copyFile:
     post:
       summary: copyFile
@@ -173,6 +208,11 @@ paths:
           destination: './destination.txt'
         });
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyFileOptions'
   /__nativeMethod_filesystem.moveFile:
     post:
       summary: moveFile
@@ -191,6 +231,11 @@ paths:
           destination: './destination.txt'
         });
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveFileOptions'
   /__nativeMethod_filesystem.getStats:
     post:
       summary: getStats
@@ -210,6 +255,11 @@ paths:
         });
         console.log('Stats:', response);
         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetStatsOptions'
 components:
   requestBodies:
     CreateDirectoryRequest:
@@ -257,3 +307,90 @@ components:
           description: New directory path.
       title: ''
       description: ''
+    RemoveDirectoryOptions:
+      title: RemoveDirectoryOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: Directory path.
+      required:
+        - path
+    WriteFileOptions:
+      title: WriteFileOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: File name.
+        data:
+          type: string
+          description: Content of the file in string format.
+      required:
+        - path
+        - data
+    WriteBinaryFileOptions:
+      title: WriteBinaryFileOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: File name.
+        data:
+          type: string
+          description: 'Content of the binary file as an (`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).'
+    ReadFileOptions:
+      title: ReadFileOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: File name.
+    ReadBinaryFileOptions:
+      title: ReadBinaryFileOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: File name.
+    RemoveFileOptions:
+      title: RemoveFileOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: File name.
+    ReadDirectoryOptions:
+      title: ReadDirectoryOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: Directory path
+    CopyFileOptions:
+      title: CopyFileOptions
+      type: object
+      properties:
+        source:
+          type: string
+          description: Source file as a string.
+        destination:
+          type: string
+          description: Destionation file as a string.
+    MoveFileOptions:
+      title: MoveFileOptions
+      type: object
+      properties:
+        source:
+          type: string
+          description: Source file as a string.
+        destination:
+          type: string
+          description: Destionation file as a string.
+    GetStatsOptions:
+      title: GetStatsOptions
+      type: object
+      properties:
+        path:
+          type: string
+          description: File or directory path.

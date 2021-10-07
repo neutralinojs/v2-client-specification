@@ -43,15 +43,18 @@ document.addEventListener ('DOMContentLoaded', () =>
         try {
             result = await eval (code)
         } catch (error) {
-            result = error
+            target.textContent = error instanceof Error
+                ? ''+error
+                : JSON.stringify (error, null, 2)
+            return
         }
 
         if (!result) {
             target.textContent = result
             return
         }
-        target.textContent = typeof result === 'string'
-            ? JSON.stringify (JSON.parse (result), null, 2)
-            : JSON.stringify (result, null, 2)
+        target.textContent = typeof result === 'object'
+            ? JSON.stringify (result, null, 2)
+            : result
     }
 })

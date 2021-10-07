@@ -3,24 +3,17 @@ info:
   title: Neutralino.app
   version: 1.5.0
   description: '`Neutralino.debug` namespace contains application debugging utilities.'
-
 x-ref: |
   https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/debug.md
   https://github.com/neutralinojs/neutralinojs/blob/main/api/debug/debug.cpp
   https://github.com/neutralinojs/neutralino.js/blob/main/src/api/debug.ts
-  
 paths:
-
   /__nativeMethod_debug.log:
     post:
       summary: log
       operationId: Neutralino.debug.log
-      tags: [Debug]
-      requestBody:
-        $ref: '#/components/requestBodies/LogRequest'
-      responses:
-        200:
-          $ref: '#/components/responses/LogResponse'
+      tags:
+        - Debug
       description: |-
         Writes messages to `neutralino.log` file. 
 
@@ -28,35 +21,29 @@ paths:
         If your application is running via `neu run` or `neu listen`, you can see log
         messages on your terminal.
         :::
-        
+
         ```js
-        await Neutralino.debug.log({
+        Neutralino.debug.log({
           type: 'INFO',
           message: 'Test message'
         });
         ```
-
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogOptions'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogResult'
 components:
-  
-  requestBodies:
-    
-    LogRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LogOptions'
-
-  responses:
-
-    LogResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LogResult'
-
+  requestBodies: {}
+  responses: {}
   schemas:
-    
     LogOptions:
       type: object
       properties:
@@ -64,16 +51,15 @@ components:
           type: string
           enum:
             - INFO
-            - WARN
+            - WARNING
             - ERROR
-          description:  Type of the message. Accepted values are `INFO`, `WARN`, and `ERROR`.
+          description: 'Type of the message. Accepted values are `INFO`, `WARN`, and `ERROR`.'
         message:
           type: string
           description: Content to be logged.
       required:
-        - "type"
-        - "message"
-
+        - type
+        - message
     LogResult:
       type: object
       properties:
@@ -82,6 +68,5 @@ components:
         message:
           type: string
       required:
-        - "success"
-        - "message"
-    
+        - success
+        - message

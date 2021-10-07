@@ -1,22 +1,22 @@
 
 info:
 	@echo
-	@echo 'json     : Generate a bundled JSON API and model schemas'
-	@echo 'json     : Watch mode of the 'json' command'
-	@echo 'typings  : Generate the Typescript definition file'
-	@echo '           Note that you must generate the JSON API before'
-	@echo 'app      : Generate the Neutralino test application'
+	@echo 'json       : Generate a bundled JSON API and model schemas'
+	@echo 'json-watch : Watch mode of the 'json' command'
+	@echo 'typings    : Generate the Typescript definition file'
+	@echo '             Note that you must generate the JSON API before'
+	@echo 'app        : Generate the Neutralino test application'
 
 all: json typings app
 
 json:
-	cd ./src && node ./api-json.js
+	cd ./src && node ./api-json.js --build-json
 
 json-watch:
-	cd ./src && node ./api-json.js --watch
+	cd ./src && node ./api-json.js --watch-json
 
 typings:
-	npx openapi-typescript src/api.json -o neutralino.api.d.ts
+	cd ./src && node ./api-dts.js --build-dts
 
 app:
 	cp -ru ../neutralinojs/bin  .

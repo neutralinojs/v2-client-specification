@@ -87,7 +87,7 @@ components:
             title: ExitQuery
             type: object
             properties:
-              exitCode:
+              code:
                 type: integer
                 description: An integer value for the process's exit code. The default value is always `0` (success).
   responses:

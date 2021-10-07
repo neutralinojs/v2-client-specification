@@ -36,7 +36,7 @@
                 "title": "ExitQuery",
                 "type": "object",
                 "properties": {
-                  "exitCode": {
+                  "code": {
                     "type": "integer",
                     "description": "An integer value for the process's exit code. The default value is always `0` (success)."
                   }
@@ -272,7 +272,9 @@
                     "globalVariables",
                     "modes",
                     "cli"
-                  ]
+                  ],
+                  "title": "",
+                  "description": "Contains the application configuration details. "
                 }
               }
             }
@@ -388,7 +390,7 @@
             }
           }
         },
-        "description": "Provides physical memory details (in megabytes).\n\n```js\nlet ramInfo = await Neutralino.computer.getRamUsage();\nconsole.log(`Your ram size: ${Math.round(ramInfo.total / 1000000)}GB`);\n```"
+        "description": "Provides physical memory details (in megabytes).\n\n```js\nNeutralino.computer.getMemoryInfo()\n  .then (ramInfo => `Your ram size: ${Math.round(ramInfo.total / 1000000)}GB`)\n```"
       }
     },
     "/__nativeMethod_debug.log": {
@@ -398,6 +400,7 @@
         "tags": [
           "Debug"
         ],
+        "description": "Writes messages to `neutralino.log` file. \n\n:::tip\nIf your application is running via `neu run` or `neu listen`, you can see log\nmessages on your terminal.\n:::\n\n```js\nNeutralino.debug.log({\n  type: 'INFO',\n  message: 'Test message'\n});\n```",
         "requestBody": {
           "content": {
             "application/json": {
@@ -408,7 +411,7 @@
                     "type": "string",
                     "enum": [
                       "INFO",
-                      "WARN",
+                      "WARNING",
                       "ERROR"
                     ],
                     "description": "Type of the message. Accepted values are `INFO`, `WARN`, and `ERROR`."
@@ -449,17 +452,13 @@
               }
             }
           }
-        },
-        "description": "Writes messages to `neutralino.log` file. \n\n:::tip\nIf your application is running via `neu run` or `neu listen`, you can see log\nmessages on your terminal.\n:::\n\n```js\nawait Neutralino.debug.log({\n  type: 'INFO',\n  message: 'Test message'\n});\n```"
+        }
       }
     },
     "/__nativeMethod_filesystem.createDirectory": {
       "post": {
         "summary": "createDirectory",
         "operationId": "Neutralino.filesystem.createDirectory",
-        "tags": [
-          "Filesystem"
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -530,7 +529,10 @@
             }
           }
         },
-        "description": "Creates a new directory.\n\n```js\nawait Neutralino.filesystem.createDirectory({\n  path: './newDirectory',\n});\n```"
+        "description": "Creates a new directory.\n\n```js\nNeutralino.filesystem.createDirectory ({\n  path: './newDirectory',\n});\n```",
+        "tags": [
+          "Filesystem"
+        ]
       }
     },
     "/__nativeMethod_filesystem.removeDirectory": {
@@ -545,7 +547,26 @@
             "description": "OK"
           }
         },
-        "description": "Removes given directories.\n\n```js\nawait Neutralino.filesystem.removeDirectory({\n  path: './tmpDirectory',\n});\n```"
+        "description": "Removes given directories.\n\n```js\nawait Neutralino.filesystem.removeDirectory({\n  path: './tmpDirectory',\n});\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "RemoveDirectoryOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Directory path."
+                  }
+                },
+                "required": [
+                  "path"
+                ]
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.writeFile": {
@@ -560,7 +581,31 @@
             "description": "OK"
           }
         },
-        "description": "Writes new text files with data.\n\n```js\nawait Neutralino.filesystem.writeFile({\n  fileName: './myFile.txt',\n  data: 'Sample content'\n});\n```"
+        "description": "Writes new text files with data.\n\n```js\nawait Neutralino.filesystem.writeFile({\n  fileName: './myFile.txt',\n  data: 'Sample content'\n});\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "WriteFileOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "File name."
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "Content of the file in string format."
+                  }
+                },
+                "required": [
+                  "path",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.writeBinaryFile": {
@@ -575,7 +620,27 @@
             "description": "OK"
           }
         },
-        "description": "Writes new binary files with data.\n\n```js\nlet rawBin = new ArrayBuffer(1);\nlet view = new Uint8Array(rawBin);\nview[0] = 64; // Saves ASCII '@' to the binary file\nawait Neutralino.filesystem.writeBinaryFile({\n  fileName: './myFile.bin',\n  data: rawBin\n});\n```"
+        "description": "Writes new binary files with data.\n\n```js\nlet rawBin = new ArrayBuffer(1);\nlet view = new Uint8Array(rawBin);\nview[0] = 64; // Saves ASCII '@' to the binary file\nawait Neutralino.filesystem.writeBinaryFile({\n  fileName: './myFile.bin',\n  data: rawBin\n});\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "WriteBinaryFileOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "File name."
+                  },
+                  "data": {
+                    "type": "string",
+                    "description": "Content of the binary file as an (`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)."
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.readFile": {
@@ -590,7 +655,23 @@
             "description": "OK"
           }
         },
-        "description": "Reads text files.\n\n```js\nlet response = await Neutralino.filesystem.readFile({\n  fileName: './myFile.txt'\n});\nconsole.log(`Content: ${response.data}`);\n```"
+        "description": "Reads text files.\n\n```js\nlet response = await Neutralino.filesystem.readFile({\n  fileName: './myFile.txt'\n});\nconsole.log(`Content: ${response.data}`);\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "ReadFileOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "File name."
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.readBinaryFile": {
@@ -605,7 +686,23 @@
             "description": "OK"
           }
         },
-        "description": "Reads binary files.\n\n```js\nlet response = await Neutralino.filesystem.readBinaryFile({\n  fileName: './myFile.bin'\n});\nlet view = new Uint8Array(response.data);\nconsole.log('Binary content: ', view);\n```"
+        "description": "Reads binary files.\n\n```js\nlet response = await Neutralino.filesystem.readBinaryFile({\n  fileName: './myFile.bin'\n});\nlet view = new Uint8Array(response.data);\nconsole.log('Binary content: ', view);\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "ReadBinaryFileOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "File name."
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.removeFile": {
@@ -620,7 +717,23 @@
             "description": "OK"
           }
         },
-        "description": "Removes given file.\n\n```js\nawait Neutralino.filesystem.removeFile({\n  fileName: './myFile.txt'\n});\n```"
+        "description": "Removes given file.\n\n```js\nawait Neutralino.filesystem.removeFile({\n  fileName: './myFile.txt'\n});\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "RemoveFileOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "File name."
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.readDirectory": {
@@ -635,7 +748,23 @@
             "description": "OK"
           }
         },
-        "description": "Reads a whole directory.\n\n```js\nlet response = await Neutralino.filesystem.readDirectory({\n  path: NL_PATH\n});\nconsole.log('Content: ', response.entries);\n```"
+        "description": "Reads a whole directory.\n\n```js\nlet response = await Neutralino.filesystem.readDirectory({\n  path: NL_PATH\n});\nconsole.log('Content: ', response.entries);\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "ReadDirectoryOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Directory path"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.copyFile": {
@@ -650,7 +779,27 @@
             "description": "OK"
           }
         },
-        "description": "Copies a file to a new destination.\n\n```js\nawait Neutralino.filesystem.copyFile({\n  source: './source.txt',\n  destination: './destination.txt'\n});\n```"
+        "description": "Copies a file to a new destination.\n\n```js\nawait Neutralino.filesystem.copyFile({\n  source: './source.txt',\n  destination: './destination.txt'\n});\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "CopyFileOptions",
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string",
+                    "description": "Source file as a string."
+                  },
+                  "destination": {
+                    "type": "string",
+                    "description": "Destionation file as a string."
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.moveFile": {
@@ -665,7 +814,27 @@
             "description": "OK"
           }
         },
-        "description": "Moves a file to a new destination.\n\n```js\nawait Neutralino.filesystem.moveFile({\n  source: './source.txt',\n  destination: './destination.txt'\n});\n```"
+        "description": "Moves a file to a new destination.\n\n```js\nawait Neutralino.filesystem.moveFile({\n  source: './source.txt',\n  destination: './destination.txt'\n});\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "MoveFileOptions",
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string",
+                    "description": "Source file as a string."
+                  },
+                  "destination": {
+                    "type": "string",
+                    "description": "Destionation file as a string."
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_filesystem.getStats": {
@@ -680,7 +849,23 @@
             "description": "OK"
           }
         },
-        "description": "Returns file statistics for the given path. If the given path doesn't exist or is unable to access, \nthe awaited method will throw an error. Therefore, you can use this method to check the existance of a file or directory.\n\n```js\nlet response = await Neutralino.filesystem.getStats({\n  path: './sampleVideo.mp4'\n});\nconsole.log('Stats:', response);\n```"
+        "description": "Returns file statistics for the given path. If the given path doesn't exist or is unable to access, \nthe awaited method will throw an error. Therefore, you can use this method to check the existance of a file or directory.\n\n```js\nlet response = await Neutralino.filesystem.getStats({\n  path: './sampleVideo.mp4'\n});\nconsole.log('Stats:', response);\n```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "GetStatsOptions",
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "File or directory path."
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/__nativeMethod_os.execCommand": {
@@ -742,10 +927,10 @@
         "description": "Executes a command and returns the output.\n\n```js\nNeutralino.os.execCommand ('python --version')\n```"
       }
     },
-    "/__nativeMethod_os.getEnvar": {
+    "/__nativeMethod_os.getEnv": {
       "post": {
-        "summary": "getEnvar",
-        "operationId": "Neutralino.os.getEnvar",
+        "summary": "getEnv",
+        "operationId": "Neutralino.os.getEnv",
         "tags": [
           "OS"
         ],
@@ -795,8 +980,9 @@
             }
           }
         },
-        "description": "Provides the value of a given environment variable.\n\n```js\nNeutralino.os.getEnvar('USER')\n  .then (response => `USER = ${response.value}`);\n```"
-      }
+        "description": "Provides the value of a given environment variable.\n\n```js\nNeutralino.os.getEnv('USER')\n  .then (response => `USER = ${response.value}`);\n```"
+      },
+      "parameters": []
     },
     "/__nativeMethod_os.showOpenDialog": {
       "post": {
@@ -1418,7 +1604,7 @@
                     "description": "Maximum height of the window in pixels."
                   },
                   "resizable": {
-                    "type": "number",
+                    "type": "boolean",
                     "description": "A boolean value to make the window resizable or fixed."
                   }
                 }

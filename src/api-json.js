@@ -2,23 +2,11 @@
 //@ts-check
 
 import Path from 'path'
-import Url  from 'url'
 import chokidar from 'chokidar'
-import { namespaces, readYamlFile, writeJsonFile, exit } from './api-tools.js'
-
-//@ts-ignore
-const __dirname = Path.dirname (Url.fileURLToPath (import.meta.url))
-
-if (process.cwd () != __dirname)
-{
-    exit (
-        'You need to run this script in the `/api` directory.\n' +
-        'This is necessary to resolve JSON references.'
-    )
-}
+import { namespaces, readYamlFile, writeJsonFile, exit, __dirname } from './api-tools.js'
 
 
-if (process.argv.includes ('--watch'))
+if (process.argv.includes ('--watch-json'))
 {
     const watcher = chokidar.watch ('./*.yaml', { ignored: './api.yaml', persistent: true })
     watcher.on ('change', (path, stats) =>
@@ -26,7 +14,7 @@ if (process.argv.includes ('--watch'))
         writeFlattenApis ()
     })
 }
-else
+else if (process.argv.includes ('--build-json'))
 {
     writeFlattenApis ()
 }
