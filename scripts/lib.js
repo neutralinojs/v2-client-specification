@@ -15,12 +15,14 @@ export const __dirname = Path.dirname (Url.fileURLToPath (import.meta.url))
 */
 
 export const ROOT_DIR  = Path.join (__dirname, '..')
-export const API_DIR   = Path.join (__dirname, '..', 'api')
 export const API_NAMES = ['app', 'computer', 'debug', 'filesystem', 'os', 'storage', 'window']
 
+export const API_DIR   = Path.join (ROOT_DIR, 'api')
+export const DOC_DIR   = Path.join (ROOT_DIR, 'docs')
 export const OUT_DIR   = Path.join (ROOT_DIR, 'dist')
 export const OUT_DTS   = Path.join (ROOT_DIR, 'dist', 'neutralino.api.d.ts')
 export const OUT_JSON  = Path.join (ROOT_DIR, 'dist', 'neutralino.api.json')
+
 
 if (Fs.existsSync (OUT_DIR) === false)
     Fs.mkdirSync (OUT_DIR, { recursive: true })
@@ -67,6 +69,15 @@ export function readYamlFile (filepath, flatten = true)
     
 }
 
+/**
+ * 
+ * @param {string} namespace 
+ * @returns {Promise <OADocument>}
+ */
+export function readApiNs (namespace)
+{
+    return readYamlFile (Path.join (API_DIR, namespace + '.yaml'))
+}
 
 /**
  * @param {string} filepath 
