@@ -55,7 +55,7 @@ See the following changes.
 - filesystem.writeFile: filesystem.writeFile(fileLocation, dataString)
 - filesystem.writeBinaryFile: filesystem.writeBinaryFile(fileLocation, binaryData)
 - filesystem.readFile: filesystem.readFile(fileLocation) will return the file content directly.
-- filesystem.readBinaryFile: filesystem.readBinaryFile(fileLocation, binaryData) will return the binary content directly.
+- filesystem.readBinaryFile: filesystem.readBinaryFile(fileLocation) will return the binary content directly.
 - filesystem.removeFile: filesystem.removeFile(fileLocation)
 - filesystem.readDirectory: filesystem.readDirectory(dirPath) will return the `entries` directly.
 - filesystem.copyFile: No changes
