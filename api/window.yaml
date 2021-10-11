@@ -9,24 +9,32 @@ x-ref: |
   https://github.com/neutralinojs/neutralinojs.github.io/blob/main/docs/api/window.md
   https://github.com/neutralinojs/neutralinojs/blob/main/api/window/window.cpp
   https://github.com/neutralinojs/neutralino.js/blob/main/src/api/window.ts
+  
 paths:
   /__nativeMethod_window.setTitle:
     post:
       summary: setTitle
       operationId: Neutrlino.window.setTitle
+      tags:
+        - Window
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTitleRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
       description: |-
         Sets the title of the native window.
 
         ```js
         Neutralino.window.setTitle ('My window')
         ```
-      tags:
-        - Window
-      requestBody:
-        $ref: '#/components/requestBodies/SetTitleRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/SuccessResponse'
       x-codeSamples:
         - lang: JavaScript
           label: JS
@@ -35,6 +43,20 @@ paths:
     post:
       summary: setSize
       operationId: neutralino_window_post_size
+      tags:
+        - Window
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetSizeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
       description: |
         Resize the native window. \
         This feature is suitable to make custom window bars along with the [borderless mode](https://neutralino.js.org/docs/configuration/neutralino.config.json#modeswindowborderless-boolean).
@@ -55,13 +77,6 @@ paths:
             resizable: false
         });
         ```
-      tags:
-        - Window
-      requestBody:
-        $ref: '#/components/requestBodies/SetSizeRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/SuccessResponse'
   /__nativeMethod_window.setIcon:
     post:
       summary: setIcon
@@ -70,10 +85,17 @@ paths:
       tags:
         - Window
       requestBody:
-        $ref: '#/components/requestBodies/SetIconRequest'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetIconRequest'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
       x-doc: const icon = '/resources/icons/appIcon.png'; await Neutralino.window.setIcon(icon);
   /__nativeMethod_window.focus:
     get:
@@ -84,7 +106,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.hide:
     get:
       summary: hide
@@ -94,7 +120,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.isVisible:
     get:
       summary: isVisible
@@ -104,7 +134,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/IsVisibleResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsVisibleResponse'
   /__nativeMethod_window.show:
     get:
       summary: show
@@ -114,7 +148,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.minimize:
     get:
       summary: minimize
@@ -124,7 +162,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.maximize:
     get:
       summary: maximize
@@ -134,7 +176,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.isMaximized:
     get:
       summary: isMaximized
@@ -144,7 +190,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/IsMaximizedResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsMaximizedResponse'
   /__nativeMethod_window.unmaximize:
     get:
       summary: unmaximize
@@ -154,7 +204,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.setFullScreen:
     get:
       summary: setFullScreen
@@ -164,7 +218,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.isFullScreen:
     get:
       summary: isFullScreen
@@ -174,7 +232,11 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/IsFullScreenResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsFullScreenResponse'
   /__nativeMethod_window.exitFullScreen:
     get:
       summary: exitFullScreen
@@ -184,129 +246,108 @@ paths:
         - Window
       responses:
         '200':
-          $ref: '#/components/responses/SuccessResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
   /__nativeMethod_window.move:
     post:
       summary: move
       operationId: Neutralino.window.move
+      tags:
+        - Window
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
       description: |
         Moves the native window into given coordinates. \
         Neutralinojs's cross-platform coordinate system starts from top-left corner of the screen.
         In other words, `x=0,y=0` point refers to the top-left corner of the device's main screen.
-      tags:
-        - Window
-      requestBody:
-        $ref: '#/components/requestBodies/MoveRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/SuccessResponse'
 components:
-  requestBodies:
-    SetTitleRequest:
-      content:
-        application/json:
-          schema:
-            title: SetTitleQuery
-            properties:
-              title:
-                type: string
-                description: Title of the window as a string.
-            required:
-              - title
-          examples:
-            default:
-              value:
-                title: New title
-    SetSizeRequest:
-      content:
-        application/json:
-          schema:
-            title: SetSizeQuery
-            type: object
-            properties:
-              width:
-                type: number
-                description: Window width in pixels.
-              height:
-                type: number
-                description: Window height in pixels.
-              minWidth:
-                type: number
-                description: Minimum width of the window in pixels.
-              minHeight:
-                type: number
-                description: Minimum height of the window in pixels.
-              maxWidth:
-                type: number
-                description: Maximum width of the window in pixels.
-              maxHeight:
-                type: number
-                description: Maximum height of the window in pixels.
-              resizable:
-                type: boolean
-                description: A boolean value to make the window resizable or fixed.
-    SetIconRequest:
-      content:
-        application/json:
-          schema:
-            title: SetIconQuery
-            type: object
-            properties:
-              icon:
-                type: string
-                description: Path of the icon. A `200x200` PNG image file works fine on all supported operating systems.
-            required:
-              - icon
-    MoveRequest:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              x:
-                type: number
-                description: A integer value for the horizontal position.
-              'y':
-                type: number
-                description: A integer value for the vertical position.
-            required:
-              - x
-              - 'y'
-  responses:
+  schemas:
     SuccessResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                default: true
-                description: Always true
-            required:
-              - success
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: true
+          description: Always true
+      required:
+        - success
+    SetTitleRequest:
+      title: SetTitleQuery
+      properties:
+        title:
+          type: string
+          description: Title of the window as a string.
+          example: New title
+      required:
+        - title
+    SetSizeRequest:
+      title: SetSizeQuery
+      type: object
+      properties:
+        width:
+          type: number
+          description: Window width in pixels.
+        height:
+          type: number
+          description: Window height in pixels.
+        minWidth:
+          type: number
+          description: Minimum width of the window in pixels.
+        minHeight:
+          type: number
+          description: Minimum height of the window in pixels.
+        maxWidth:
+          type: number
+          description: Maximum width of the window in pixels.
+        maxHeight:
+          type: number
+          description: Maximum height of the window in pixels.
+        resizable:
+          type: boolean
+          description: A boolean value to make the window resizable or fixed.
+    SetIconRequest:
+      title: SetIconQuery
+      type: object
+      properties:
+        icon:
+          type: string
+          description: Path of the icon. A `200x200` PNG image file works fine on all supported operating systems.
+      required:
+        - icon
     IsMaximizedResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: boolean
+      type: boolean
     IsFullScreenResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              returnValue:
-                type: boolean
+      type: object
+      properties:
+        success:
+          type: boolean
+        returnValue:
+          type: boolean
     IsVisibleResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            title: IsVisibleReturnValue
-            type: boolean
+      title: IsVisibleReturnValue
+      type: boolean
+    MoveRequest:
+      type: object
+      properties:
+        x:
+          type: number
+          description: A integer value for the horizontal position.
+        'y':
+          type: number
+          description: A integer value for the vertical position.
+      required:
+        - x
+        - 'y'

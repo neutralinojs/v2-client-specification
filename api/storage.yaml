@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Neutralino.app
+  title: Neutralino.storage
   version: 1.5.0
   description: |-
     Neutralinojs has an in-built shared key-value storage. It's like a
@@ -51,7 +51,11 @@ paths:
         $ref: '#/components/requestBodies/GetDataRequest'
       responses:
         200:
-          $ref: '#/components/responses/GetDataResponse'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataResult'
       description: |
         Reads and returns data for a given Neutralinojs shared storage key. 
         ```js
@@ -98,27 +102,6 @@ components:
                 required:
                   - "error"
 
-    GetDataResponse:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: object
-            oneOf:
-              - properties:
-                  success:
-                    type: boolean
-                  returnValue:
-                    $ref: '#/components/schemas/GetDataResult'
-                required:
-                  - "success"
-                  - "returnValue"
-              - properties:
-                  error:
-                    type: string
-                required:
-                  - "error"
-
   schemas:
 
     SetDataOptions:
@@ -142,8 +125,24 @@ components:
 
     GetDataResult:
       type: object
-      properties:
-        data:
-          type: string
-          description: Data string of the storage record.
+      oneOf:
+        - title: Success
+          properties:
+            success:
+              type: boolean
+            returnValue:
+              type: object
+              properties:
+                data:
+                  type: string
+                  description: Data string of the storage record.
+          required:
+            - "success"
+            - "returnValue"
+        - title: Error
+          properties:
+            error:
+              type: string
+          required:
+            - "error"
 

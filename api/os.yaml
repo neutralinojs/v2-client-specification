@@ -153,7 +153,28 @@ paths:
           $ref: '#/components/responses/OpenResponse'
       description: |-
         Opens a URL with the default web browser.
-        :::tip If your application is running on the default web browser, this method will open a new tab. :::
+
+        :::tip
+        If your application is running on the default web browser, this method will open a new tab.
+        :::
+  /__nativeMethod_getPath:
+    post:
+      summary: Neutralino.os.getPath
+      operationId: post-__nativeMethod_getPath
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPathResult'
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPathOptions'
+      x-ref: 'https://github.com/neutralinojs/neutralinojs/commit/3b783eecb0a245121f72df8f116035766cf687aa'
 components:
   requestBodies:
     ExecCommandRequest:
@@ -441,3 +462,39 @@ components:
       x-examples:
         example:
           url: 'https://neutralino.js.org'
+    GetPathOptions:
+      title: GetPathOptions
+      type: object
+      properties:
+        name:
+          type: string
+          enum:
+            - config
+            - data
+            - cache
+            - documents
+            - pictures
+            - music
+            - video
+            - downloads
+            - saveGames1
+            - saveGames2
+      required:
+        - name
+    GetPathResult:
+      title: GetPathResult
+      oneOf:
+        - properties:
+            success:
+              type: boolean
+            returnValue:
+              type: string
+          required:
+            - success
+            - returnValue
+        - properties:
+            error:
+              type: string
+          required:
+            - error
+      type: object

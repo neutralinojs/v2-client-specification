@@ -338,7 +338,7 @@ components:
           description: File name.
         data:
           type: string
-          description: 'Content of the binary file as an (`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).'
+          description: 'Content of the binary file as an [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).'
     ReadFileOptions:
       title: ReadFileOptions
       type: object
