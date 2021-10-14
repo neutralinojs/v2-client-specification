@@ -66,10 +66,10 @@ See the following changes.
 
 - os.execCommand: os.execCommand(command, {options}) will return the `output` directly.
 - os.getEnvar: os.getEnv(key) will return the `value` directly.
-- os.showDialogOpen: os.showOpenDialog(title, options) will return the `selectedEntry` directly.
-- os.showDialogSave: os.showDialogSave(title) will return the `selectedEntry` directly.
-- os.showNotification: os.showNotification(title, content)
-- os.showMessageBox: os.showMessageBox(title, content, type)
+- os.showDialogOpen: os.showOpenDialog(title, options) will return the `selectedEntries` directly. `isDirectoryMode` logic will be moved as a new function: `os.showFolderDialog(title)`
+- os.showDialogSave: os.showDialogSave(title, options) will return the `selectedEntry` directly.
+- os.showNotification: os.showNotification(title, content, icon)
+- os.showMessageBox: os.showMessageBox(title, content, choice, icon)
 - os.setTray: No changes
 
 ### computer (Done)
